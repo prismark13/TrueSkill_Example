@@ -186,8 +186,7 @@
         "rating": -1.4,
         "sessions": 3
       }
-    ],
-    "count": 37
+    ]
   },
   "2020": {
     "players": [
@@ -11846,8 +11845,7 @@
         "rating": -1.67,
         "sessions": 3
       }
-    ],
-    "count": 2331
+    ]
   },
   "2019": {
     "players": [
@@ -19276,8 +19274,10 @@
         "rating": -2.46,
         "sessions": 3
       }
-    ],
-    "count": 1485
+    ]
+  },
+  "2018": {
+    "players": []
   },
   "All-Time": {
     "players": [
@@ -24866,7 +24866,6 @@
         "rating": 10.35,
         "sessions": 56
       }
-    ],
-    "count": 1117
+    ]
   }
 }

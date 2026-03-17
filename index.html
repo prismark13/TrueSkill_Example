@@ -3,37 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance Intelligence</title>
+    <title>Performance Intelligence | Honors</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700&display=swap');
         
-        body { font-family: 'Public Sans', sans-serif; background: #FFF; color: #111; margin: 0; display: flex; justify-content: center; }
-        .container { max-width: 1100px; width: 90%; padding: 80px 0; }
-        
-        /* Sidebar-style Header */
-        .controls { position: fixed; left: 40px; top: 40px; }
-        select { background: #001E3C; color: white; border: none; padding: 10px 20px; font-weight: 600; cursor: pointer; border-radius: 4px; }
+        body { 
+            font-family: 'Public Sans', sans-serif; 
+            background: #FFF; 
+            color: #111; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+        }
 
+        /* Fixed Sidebar Controller */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            background: #001E3C;
+            padding: 40px 20px;
+            color: white;
+            z-index: 100;
+        }
+
+        .sidebar-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15rem; color: #8BA8C7; margin-bottom: 10px; }
+
+        select { 
+            width: 100%;
+            background: transparent;
+            color: white;
+            border: 1px solid #2D4A6B;
+            padding: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        /* Center Content Container */
+        .container { 
+            max-width: 1200px; 
+            width: 80%; 
+            padding: 80px 0; 
+            margin-left: 240px; /* Offset for sidebar */
+        }
+
+        /* Hero Typography */
         .hero { margin-bottom: 80px; }
         #display-year { font-size: 8rem; font-weight: 700; color: #001E3C; letter-spacing: -0.4rem; line-height: 0.8; margin: 0; }
-        .label { font-size: 1rem; color: #00558C; text-transform: uppercase; letter-spacing: 0.4rem; font-weight: 600; margin-top: 20px; }
+        .hero-sub { font-size: 1.1rem; color: #00558C; text-transform: uppercase; letter-spacing: 0.4rem; font-weight: 600; margin-top: 15px; }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-        .section-title { font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.2rem; color: #00558C; border-bottom: 2px solid #F4F7F9; padding-bottom: 15px; margin-bottom: 25px; }
+        /* Grid Layout */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+        .section-title { 
+            font-weight: 700; font-size: 0.85rem; text-transform: uppercase; 
+            letter-spacing: 0.2rem; color: #00558C; 
+            border-bottom: 2px solid #F4F7F9; padding-bottom: 15px; margin-bottom: 25px; 
+        }
 
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; font-size: 0.65rem; color: #A5AAB0; text-transform: uppercase; padding: 10px 0; border-bottom: 1px solid #EEE; }
-        td { padding: 16px 0; font-size: 0.95rem; border-bottom: 1px solid #F9FAFB; }
-        .rank { width: 40px; font-weight: 700; color: #00558C; }
-        .val { text-align: right; font-weight: 700; color: #001E3C; }
-        .sessions { text-align: right; color: #8E959E; font-variant-numeric: tabular-nums; }
+        /* Table Styling */
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        th { text-align: left; font-size: 0.65rem; color: #A5AAB0; text-transform: uppercase; padding: 10px 0; border-bottom: 1px solid #EEE; letter-spacing: 0.05rem; }
+        td { padding: 18px 0; font-size: 1rem; border-bottom: 1px solid #F9FAFB; }
+        
+        .rank { width: 45px; font-weight: 700; color: #00558C; }
+        .name-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .val { text-align: right; font-weight: 700; color: #001E3C; width: 80px; }
+        .sessions { text-align: right; color: #8E959E; font-variant-numeric: tabular-nums; width: 80px; }
+        
+        .proven-badge {
+            font-size: 0.6rem; background-color: #E8F0FE; color: #00558C;
+            padding: 3px 6px; border-radius: 4px; margin-left: 10px;
+            font-weight: 600; vertical-align: middle;
+        }
+
+        /* Animation */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.4s ease forwards; }
     </style>
 </head>
 <body>
-    <div class="controls">
+    <div class="sidebar">
+        <div class="sidebar-label">Timescale</div>
         <select id="year-select" onchange="updateDashboard()">
             <option value="2026">2026</option>
             <option value="2025">2025</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
             <option value="2018">2018</option>
         </select>
     </div>
@@ -41,17 +104,24 @@
     <div class="container">
         <div class="hero">
             <h1 id="display-year">2026</h1>
-            <div class="label">Performance Analysis</div>
+            <div class="hero-sub">Performance Analysis</div>
         </div>
 
         <div class="grid">
-            <div id="players-section">
-                <div class="section-title">Individuals</div>
-                <table id="player-table"><thead><tr><th class="rank">#</th><th>Name</th><th style="text-align:right">Rating</th><th style="text-align:right">Sessions</th></tr></thead><tbody></tbody></table>
+            <div class="ledger">
+                <div class="section-title">Top 20 Individuals</div>
+                <table id="player-table">
+                    <thead><tr><th class="rank">#</th><th>Player</th><th style="text-align:right">Rating</th><th style="text-align:right">Sess</th></tr></thead>
+                    <tbody></tbody>
+                </table>
             </div>
-            <div id="pairs-section">
-                <div class="section-title">Partnerships</div>
-                <table id="pair-table"><thead><tr><th class="rank">#</th><th>Pair</th><th style="text-align:right">Score</th><th style="text-align:right">Sessions</th></tr></thead><tbody></tbody></table>
+
+            <div class="ledger">
+                <div class="section-title">Top 20 Partnerships</div>
+                <table id="pair-table">
+                    <thead><tr><th class="rank">#</th><th>Partnership</th><th style="text-align:right">Score</th><th style="text-align:right">Sess</th></tr></thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -60,9 +130,13 @@
         let masterData = {};
 
         async function init() {
-            const response = await fetch('data.json');
-            masterData = await response.json();
-            updateDashboard();
+            try {
+                const response = await fetch('data.json');
+                masterData = await response.json();
+                updateDashboard();
+            } catch (e) {
+                console.error("Data load failed. Ensure data.json is in the docs folder.");
+            }
         }
 
         function updateDashboard() {
@@ -70,18 +144,23 @@
             document.getElementById('display-year').innerText = year;
             const data = masterData[year];
 
-            renderTable('player-table', data.players, 'name', 'rating', 'sessions');
+            if (!data) return;
+
+            renderTable('player-table', data.players, 'name', 'rating', 'sessions', false);
             renderTable('pair-table', data.pairs, 'pair', 'score', 'sessions', true);
         }
 
-        function renderTable(tableId, rows, nameKey, valKey, sessionKey, isPct=false) {
+        function renderTable(tableId, rows, nameKey, valKey, sessKey, isPct) {
             const tbody = document.querySelector(`#${tableId} tbody`);
             tbody.innerHTML = rows.map((row, i) => `
-                <tr>
-                    <td class="rank">${i+1}</td>
-                    <td>${row[nameKey]}</td>
+                <tr class="fade-in" style="animation-delay: ${i * 0.03}s">
+                    <td class="rank">${i + 1}</td>
+                    <td class="name-col">
+                        ${row[nameKey]}
+                        ${(!isPct && row.sigma < 0.8) ? '<span class="proven-badge">PROVEN</span>' : ''}
+                    </td>
                     <td class="val">${isPct ? row[valKey].toFixed(1) + '%' : row[valKey].toFixed(2)}</td>
-                    <td class="sessions">${row[sessionKey]}</td>
+                    <td class="sessions">${row[sessKey]}</td>
                 </tr>
             `).join('');
         }

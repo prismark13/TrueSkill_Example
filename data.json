@@ -1,1 +1,724 @@
-{"2026": {"players": [{"name": "Paul Frean", "rating": 31.960464538355758, "sigma": 1.4405271662242607, "sessions": 49}, {"name": "John Rufer", "rating": 31.30355153470664, "sigma": 1.9355708149856259, "sessions": 32}, {"name": "Lynne Halliday", "rating": 30.325269352346194, "sigma": 1.325087651235381, "sessions": 56}, {"name": "Barbara Bernard", "rating": 30.16233687931829, "sigma": 3.256276242583875, "sessions": 10}, {"name": "Shelia Brog", "rating": 29.503970635145663, "sigma": 3.435608088903454, "sessions": 10}, {"name": "Jeff Bayone", "rating": 28.918283250034957, "sigma": 1.392656633279904, "sessions": 56}, {"name": "Laura Tolkow", "rating": 28.753247122176468, "sigma": 1.6831367647575122, "sessions": 39}, {"name": "Kelley Hwang", "rating": 28.664387010452423, "sigma": 1.5969490193764124, "sessions": 48}, {"name": "Barbara Bayone", "rating": 28.536811930888874, "sigma": 1.010828605286233, "sessions": 115}, {"name": "Mark Hyman", "rating": 28.17928799553713, "sigma": 1.204655672479385, "sessions": 86}, {"name": "Philip Lentz", "rating": 28.018191648182654, "sigma": 1.767654441860906, "sessions": 36}, {"name": "Michael Lipkin", "rating": 27.959943735626858, "sigma": 0.8058678820451424, "sessions": 222}, {"name": "Jin Hu", "rating": 27.503049110156606, "sigma": 1.3078175669064775, "sessions": 63}, {"name": "Jeff Hand", "rating": 27.332204077655337, "sigma": 2.4720557356621113, "sessions": 14}, {"name": "Roberta Feldman", "rating": 27.311613021383796, "sigma": 0.9020877484920168, "sessions": 153}, {"name": "Barbara Feingold", "rating": 27.27925093408746, "sigma": 1.090126394154631, "sessions": 101}, {"name": "Joel Wooldridge", "rating": 27.24472244947885, "sigma": 0.8534640207927949, "sessions": 175}, {"name": "Shari Peters", "rating": 27.237851829327763, "sigma": 0.7375333151574253, "sessions": 356}, {"name": "Janie Woo", "rating": 27.205380026358576, "sigma": 1.1367774238593427, "sessions": 77}, {"name": "David Libchaber", "rating": 27.201998002897266, "sigma": 0.9522165645876609, "sessions": 120}], "pairs": []}, "2025": {"players": [], "pairs": []}, "2024": {"players": [], "pairs": []}, "2023": {"players": [], "pairs": []}, "2022": {"players": [], "pairs": []}, "2021": {"players": [], "pairs": []}, "2020": {"players": [{"name": "Sue Falk", "rating": 33.145322870957294, "sigma": 1.6546025521596994, "sessions": 45}, {"name": "August Boehm", "rating": 32.49318956516559, "sigma": 1.706780301177297, "sessions": 35}, {"name": "Sabrina Silver", "rating": 32.43607550135145, "sigma": 1.403289000170893, "sessions": 61}, {"name": "Nancy Beha", "rating": 32.109938940419944, "sigma": 2.7733675982278974, "sessions": 12}, {"name": "Paul Frean", "rating": 31.960464538355758, "sigma": 1.4405271662242607, "sessions": 49}, {"name": "Catherine Strauss", "rating": 31.91334195370084, "sigma": 1.9065942534800822, "sessions": 24}, {"name": "Anna Maman", "rating": 31.884466893346428, "sigma": 2.6734185984122116, "sessions": 18}, {"name": "Eric Ettinger", "rating": 31.813142879585527, "sigma": 2.1201380215950585, "sessions": 25}, {"name": "Donna Ferrante", "rating": 31.633536121930927, "sigma": 1.766386465537514, "sessions": 33}, {"name": "Joan Schussheim", "rating": 31.531307855045075, "sigma": 1.5393398207482776, "sessions": 48}, {"name": "Sally Petrick", "rating": 31.435806967037355, "sigma": 1.6441877635585977, "sessions": 30}, {"name": "Nancy Marcus", "rating": 31.405541495076875, "sigma": 2.961635368344987, "sessions": 10}, {"name": "John Rufer", "rating": 31.30355153470664, "sigma": 1.9355708149856259, "sessions": 32}, {"name": "Sarah Tawil", "rating": 30.946725398324293, "sigma": 2.1525790367741475, "sessions": 24}, {"name": "Penny Mintz", "rating": 30.896810809165338, "sigma": 3.3771965026002952, "sessions": 10}, {"name": "Jared Lilienstein", "rating": 30.81149047317126, "sigma": 2.12748974419072, "sessions": 28}, {"name": "Irina Levitina", "rating": 30.79330117095633, "sigma": 1.0483276955761587, "sessions": 102}, {"name": "Jeff Davies", "rating": 30.74647110695308, "sigma": 3.4857533035849646, "sessions": 14}, {"name": "Sally Ehrenreich", "rating": 30.515392871518248, "sigma": 2.3924064455741645, "sessions": 19}, {"name": "Debra S. Malbin", "rating": 30.360984220047254, "sigma": 3.1167962069601804, "sessions": 14}], "pairs": [{"pair": "Jesus Arias + Ellen Becker", "score": 93.196, "sessions": 5}, {"pair": "Joanne Kassan + Sabin Danziger", "score": 86.28571428571429, "sessions": 7}, {"pair": "Virginia Silver + Janet Traynor", "score": 86.0, "sessions": 5}, {"pair": "Kerry Kappell + Eva Steiner", "score": 84.65299999999999, "sessions": 10}, {"pair": "Sandra Rimstedt + Jodi Edmonds", "score": 82.8, "sessions": 5}, {"pair": "Melissa Fawer + Brooke G. Cohen", "score": 82.16, "sessions": 5}, {"pair": "Amelia Grosberg + Joan Finsilver", "score": 81.375, "sessions": 8}, {"pair": "Martha Newport + Audrey Paul", "score": 81.2, "sessions": 6}, {"pair": "Bonnie Eisler + Geri Brand", "score": 81.16, "sessions": 5}, {"pair": "David Fishman + Anna Maman", "score": 80.97, "sessions": 5}, {"pair": "Joan Finsilver + Amelia Grosberg", "score": 79.14285714285714, "sessions": 7}, {"pair": "Anne M. Ferguson + Eileen Lissmann", "score": 78.8675, "sessions": 8}, {"pair": "Randi Reikes + Kim I. Smith", "score": 78.718, "sessions": 10}, {"pair": "Laurie Vogel + Ahmed Soliman", "score": 78.42857142857143, "sessions": 7}, {"pair": "Sabrina Silver + Laura Zubulake", "score": 77.73714285714286, "sessions": 7}, {"pair": "Susan Tane + Irina Levitina", "score": 77.25, "sessions": 6}, {"pair": "Eileen Serwer + Kathleen Alfonzetti", "score": 76.93333333333334, "sessions": 9}, {"pair": "Shari Peters + Shirley Sherak", "score": 76.91625, "sessions": 8}, {"pair": "Scott Levine + Hjordis Eythorsdottir", "score": 76.75, "sessions": 6}, {"pair": "Moira Matthews + Patricia Averill", "score": 76.586, "sessions": 5}]}, "2019": {"players": [{"name": "Sue Falk", "rating": 33.145322870957294, "sigma": 1.6546025521596994, "sessions": 45}, {"name": "August Boehm", "rating": 32.49318956516559, "sigma": 1.706780301177297, "sessions": 35}, {"name": "Sabrina Silver", "rating": 32.43607550135145, "sigma": 1.403289000170893, "sessions": 61}, {"name": "Paul Frean", "rating": 31.960464538355758, "sigma": 1.4405271662242607, "sessions": 49}, {"name": "Anna Maman", "rating": 31.884466893346428, "sigma": 2.6734185984122116, "sessions": 18}, {"name": "Eric Ettinger", "rating": 31.813142879585527, "sigma": 2.1201380215950585, "sessions": 25}, {"name": "Donna Ferrante", "rating": 31.633536121930927, "sigma": 1.766386465537514, "sessions": 33}, {"name": "Joan Schussheim", "rating": 31.531307855045075, "sigma": 1.5393398207482776, "sessions": 48}, {"name": "Sally Petrick", "rating": 31.435806967037355, "sigma": 1.6441877635585977, "sessions": 30}, {"name": "Nancy Marcus", "rating": 31.405541495076875, "sigma": 2.961635368344987, "sessions": 10}, {"name": "John Rufer", "rating": 31.30355153470664, "sigma": 1.9355708149856259, "sessions": 32}, {"name": "John Hurd", "rating": 31.19398797029503, "sigma": 2.9227249901193093, "sessions": 11}, {"name": "Sarah Tawil", "rating": 30.946725398324293, "sigma": 2.1525790367741475, "sessions": 24}, {"name": "Penny Mintz", "rating": 30.896810809165338, "sigma": 3.3771965026002952, "sessions": 10}, {"name": "Jared Lilienstein", "rating": 30.81149047317126, "sigma": 2.12748974419072, "sessions": 28}, {"name": "Irina Levitina", "rating": 30.79330117095633, "sigma": 1.0483276955761587, "sessions": 102}, {"name": "Jeff Davies", "rating": 30.74647110695308, "sigma": 3.4857533035849646, "sessions": 14}, {"name": "Barbara Popolizio", "rating": 30.380599290772974, "sigma": 2.4782107463002365, "sessions": 20}, {"name": "Debra S. Malbin", "rating": 30.360984220047254, "sigma": 3.1167962069601804, "sessions": 14}, {"name": "Lynne Halliday", "rating": 30.325269352346194, "sigma": 1.325087651235381, "sessions": 56}], "pairs": [{"pair": "John Adams + Lizbeth Adams", "score": 87.5, "sessions": 5}, {"pair": "Evelyn Sabin + Jim Diederich", "score": 87.15125, "sessions": 8}, {"pair": "Sam Rosenfeld + Anna West", "score": 87.02333333333333, "sessions": 6}, {"pair": "Honore Thynne + Yoland Hadlock", "score": 86.70625, "sessions": 8}, {"pair": "Allen Kahn + Leslie Weisbrod", "score": 85.25399999999999, "sessions": 5}, {"pair": "Susan Wollman + Pauline E. Schafer", "score": 85.12076923076923, "sessions": 13}, {"pair": "Nathan Sudakoff + Philippa Weismann", "score": 83.58142857142856, "sessions": 7}, {"pair": "Martha Minker + Linda Haft", "score": 83.32166666666667, "sessions": 6}, {"pair": "Arlene Silverman + Jesse Reisner", "score": 83.0775, "sessions": 8}, {"pair": "Varda Sandweiss + Linda Davis", "score": 82.564, "sessions": 5}, {"pair": "Glenn Eisenstein + Leni May", "score": 82.285, "sessions": 6}, {"pair": "Bruce Noble + Sheila Zaslower", "score": 82.05857142857143, "sessions": 7}, {"pair": "Ruth Perlmuth + Sharon Bernstein", "score": 81.87833333333333, "sessions": 6}, {"pair": "Susan Whelan + Susan Milch", "score": 81.442, "sessions": 5}, {"pair": "Ann Gatof + Gail Kleiner", "score": 81.21375, "sessions": 8}, {"pair": "Barry Fishkin + Thomas Harrington", "score": 81.182, "sessions": 5}, {"pair": "Eileen Levitt + Sharon Bernstein", "score": 80.96, "sessions": 11}, {"pair": "Donna Muscari + Alexandra Van Horne", "score": 80.77833333333334, "sessions": 6}, {"pair": "Ellen Friedman + Penny Breiman", "score": 80.73400000000001, "sessions": 5}, {"pair": "Giorgia Botta + Melissa Fawer", "score": 80.50800000000001, "sessions": 10}]}, "2018": {"players": [{"name": "Allen Kahn", "rating": 29.028419498254156, "sigma": 1.0273354797134493, "sessions": 121}, {"name": "Siqing Yu", "rating": 27.973895516800543, "sigma": 0.9997520151499152, "sessions": 116}, {"name": "Michael Lipkin", "rating": 27.959943735626858, "sigma": 0.8058678820451424, "sessions": 222}, {"name": "James Southern", "rating": 27.89573914386441, "sigma": 1.0074334349001202, "sessions": 124}, {"name": "Helen Rothstein", "rating": 27.674505711984118, "sigma": 0.7393377705292046, "sessions": 346}, {"name": "Shari Peters", "rating": 27.237851829327763, "sigma": 0.7375333151574253, "sessions": 356}, {"name": "Eleanor Seaman", "rating": 27.14961589986361, "sigma": 1.0665930372318688, "sessions": 93}, {"name": "Gerald Garmisa", "rating": 27.10471307087273, "sigma": 0.9970882894961715, "sessions": 110}, {"name": "David Yoon", "rating": 27.103738229698955, "sigma": 0.7380225958000683, "sessions": 351}, {"name": "Kerry Kappell", "rating": 27.041570564186163, "sigma": 0.7648749813690796, "sessions": 291}, {"name": "Giorgia Botta", "rating": 27.026991543707936, "sigma": 0.7518669428779814, "sessions": 363}, {"name": "Martin Deneroff", "rating": 26.93256338713829, "sigma": 1.2842351036238004, "sessions": 70}, {"name": "Valerie Deneroff", "rating": 26.93256338713829, "sigma": 1.2842351036238004, "sessions": 70}, {"name": "Ken King", "rating": 26.913932704763994, "sigma": 1.4438442063232986, "sessions": 57}, {"name": "Harry Davidow", "rating": 26.879912217857672, "sigma": 1.0788741610129706, "sessions": 93}, {"name": "Jeffrey Millman", "rating": 26.84738869646309, "sigma": 1.0409436217081822, "sessions": 111}, {"name": "Luna Benardete", "rating": 26.702435497764412, "sigma": 0.7653876869606653, "sessions": 300}, {"name": "Winthrop Allegaert", "rating": 26.598516325841146, "sigma": 0.8524750556232124, "sessions": 174}, {"name": "Shirley Sherak", "rating": 26.499967113036327, "sigma": 0.8061193548174095, "sessions": 225}, {"name": "Linda Einhorn-Ihde", "rating": 26.46772490702467, "sigma": 0.8203764168516778, "sessions": 204}], "pairs": []}}
+{
+    "2026": {
+        "players": [
+            {
+                "name": "Paul Frean",
+                "rating": 31.83507616012503,
+                "sigma": 1.261589583914045,
+                "sessions": 65
+            },
+            {
+                "name": "John Rufer",
+                "rating": 30.780824431533873,
+                "sigma": 1.7878706182066166,
+                "sessions": 36
+            },
+            {
+                "name": "Barbara Bernard",
+                "rating": 30.16233687931829,
+                "sigma": 3.256276242583875,
+                "sessions": 10
+            },
+            {
+                "name": "Lynne Halliday",
+                "rating": 29.143136177893812,
+                "sigma": 1.1843269966374461,
+                "sessions": 68
+            },
+            {
+                "name": "Kelley Hwang",
+                "rating": 28.780483593230002,
+                "sigma": 1.4577386157152024,
+                "sessions": 58
+            },
+            {
+                "name": "Jeff Bayone",
+                "rating": 28.73688863752443,
+                "sigma": 1.3620729671186025,
+                "sessions": 58
+            },
+            {
+                "name": "Philip Lentz",
+                "rating": 28.681189950767315,
+                "sigma": 1.7150244013612825,
+                "sessions": 38
+            },
+            {
+                "name": "Melissa Cohen",
+                "rating": 28.423616453599557,
+                "sigma": 1.2426418786339843,
+                "sessions": 64
+            },
+            {
+                "name": "Mark Hyman",
+                "rating": 28.17928799553713,
+                "sigma": 1.204655672479385,
+                "sessions": 86
+            },
+            {
+                "name": "David Libchaber",
+                "rating": 27.70312704035176,
+                "sigma": 0.8671591354869175,
+                "sessions": 148
+            },
+            {
+                "name": "Michael Lipkin",
+                "rating": 27.70001310709923,
+                "sigma": 0.7764546158734562,
+                "sessions": 248
+            },
+            {
+                "name": "Laura Tolkow",
+                "rating": 27.686989048389023,
+                "sigma": 1.571579207781413,
+                "sessions": 43
+            },
+            {
+                "name": "Barbara Bayone",
+                "rating": 27.67782558452478,
+                "sigma": 0.9154697535864023,
+                "sessions": 139
+            },
+            {
+                "name": "Jin Hu",
+                "rating": 27.580249647979237,
+                "sigma": 1.26378067582416,
+                "sessions": 67
+            },
+            {
+                "name": "Sarah Sellers",
+                "rating": 27.477613594949887,
+                "sigma": 2.9650327389836346,
+                "sessions": 14
+            },
+            {
+                "name": "Roberta Feldman",
+                "rating": 27.311613021383796,
+                "sigma": 0.9020877484920168,
+                "sessions": 153
+            },
+            {
+                "name": "Barbara Feingold",
+                "rating": 27.27925093408746,
+                "sigma": 1.090126394154631,
+                "sessions": 101
+            },
+            {
+                "name": "Shari Peters",
+                "rating": 27.237851829327763,
+                "sigma": 0.7375333151574253,
+                "sessions": 356
+            },
+            {
+                "name": "Rita Distenfeld",
+                "rating": 27.068010142111973,
+                "sigma": 0.8439851409601477,
+                "sessions": 187
+            },
+            {
+                "name": "Janie Woo",
+                "rating": 27.00397251540558,
+                "sigma": 1.0919758294782544,
+                "sessions": 83
+            }
+        ],
+        "pairs": []
+    },
+    "2025": {
+        "players": [],
+        "pairs": []
+    },
+    "2024": {
+        "players": [],
+        "pairs": []
+    },
+    "2023": {
+        "players": [],
+        "pairs": []
+    },
+    "2022": {
+        "players": [],
+        "pairs": []
+    },
+    "2021": {
+        "players": [],
+        "pairs": []
+    },
+    "2020": {
+        "players": [
+            {
+                "name": "Elizabeth Fallon",
+                "rating": 34.74432576029102,
+                "sigma": 3.022088059315981,
+                "sessions": 12
+            },
+            {
+                "name": "R Bachner",
+                "rating": 34.43613348488265,
+                "sigma": 2.721833650350464,
+                "sessions": 14
+            },
+            {
+                "name": "Joyce Saff",
+                "rating": 33.66423757187664,
+                "sigma": 2.1719299032729373,
+                "sessions": 24
+            },
+            {
+                "name": "Steven Leser",
+                "rating": 33.44048983541499,
+                "sigma": 2.978403586975713,
+                "sessions": 10
+            },
+            {
+                "name": "Sue Falk",
+                "rating": 33.145322870957294,
+                "sigma": 1.6546025521596994,
+                "sessions": 45
+            },
+            {
+                "name": "Eric Schneider",
+                "rating": 33.068503440933156,
+                "sigma": 2.396412849497153,
+                "sessions": 14
+            },
+            {
+                "name": "Sandra Prosnitz",
+                "rating": 32.66613212812121,
+                "sigma": 2.4459665134000184,
+                "sessions": 16
+            },
+            {
+                "name": "August Boehm",
+                "rating": 32.49318956516559,
+                "sigma": 1.706780301177297,
+                "sessions": 35
+            },
+            {
+                "name": "Sabrina Silver",
+                "rating": 32.43607550135145,
+                "sigma": 1.403289000170893,
+                "sessions": 61
+            },
+            {
+                "name": "Nancy Siver",
+                "rating": 32.14273926417069,
+                "sigma": 3.3304780957421016,
+                "sessions": 10
+            },
+            {
+                "name": "Anna Maman",
+                "rating": 31.884466893346428,
+                "sigma": 2.6734185984122116,
+                "sessions": 18
+            },
+            {
+                "name": "Paul Frean",
+                "rating": 31.83507616012503,
+                "sigma": 1.261589583914045,
+                "sessions": 65
+            },
+            {
+                "name": "Eric Ettinger",
+                "rating": 31.813142879585527,
+                "sigma": 2.1201380215950585,
+                "sessions": 25
+            },
+            {
+                "name": "Nancy Beha",
+                "rating": 31.676145534789228,
+                "sigma": 1.8785007890953254,
+                "sessions": 26
+            },
+            {
+                "name": "Donna Ferrante",
+                "rating": 31.633536121930927,
+                "sigma": 1.766386465537514,
+                "sessions": 33
+            },
+            {
+                "name": "Joan Schussheim",
+                "rating": 31.531307855045075,
+                "sigma": 1.5393398207482776,
+                "sessions": 48
+            },
+            {
+                "name": "Sally Petrick",
+                "rating": 31.435806967037355,
+                "sigma": 1.6441877635585977,
+                "sessions": 30
+            },
+            {
+                "name": "Carol Manire",
+                "rating": 31.146451230225168,
+                "sigma": 2.376900072366351,
+                "sessions": 20
+            },
+            {
+                "name": "Susan Eisner",
+                "rating": 31.12631536388484,
+                "sigma": 2.442313135066155,
+                "sessions": 18
+            },
+            {
+                "name": "Catherine Strauss",
+                "rating": 31.11375742218686,
+                "sigma": 1.2849908223644162,
+                "sessions": 52
+            }
+        ],
+        "pairs": [
+            {
+                "pair": "Ellen Becker + Jesus Arias",
+                "score": 93.196,
+                "sessions": 5
+            },
+            {
+                "pair": "Joan Levine + Marilyn Brainin",
+                "score": 87.76666666666667,
+                "sessions": 6
+            },
+            {
+                "pair": "Eric Schneider + Leslie Weisbrod",
+                "score": 87.57142857142857,
+                "sessions": 7
+            },
+            {
+                "pair": "Joanne Kassan + Sabin Danziger",
+                "score": 86.28571428571429,
+                "sessions": 7
+            },
+            {
+                "pair": "Jodi Edmonds + Sandra Rimstedt",
+                "score": 82.8,
+                "sessions": 5
+            },
+            {
+                "pair": "Karen S. Robbins + Mark Mariaschin",
+                "score": 82.324,
+                "sessions": 5
+            },
+            {
+                "pair": "Brooke G. Cohen + Melissa Fawer",
+                "score": 82.16,
+                "sessions": 5
+            },
+            {
+                "pair": "Audrey Paul + Martha Newport",
+                "score": 81.2,
+                "sessions": 6
+            },
+            {
+                "pair": "Janet Traynor + Virginia Silver",
+                "score": 80.91666666666667,
+                "sessions": 6
+            },
+            {
+                "pair": "Carol Benes + Nadia Helou",
+                "score": 80.9,
+                "sessions": 5
+            },
+            {
+                "pair": "Anna Maman + David Fishman",
+                "score": 80.47500000000001,
+                "sessions": 6
+            },
+            {
+                "pair": "Janice Levy + Nancy Turner",
+                "score": 80.30428571428571,
+                "sessions": 7
+            },
+            {
+                "pair": "Kim I. Smith + Randi Reikes",
+                "score": 79.71636363636364,
+                "sessions": 11
+            },
+            {
+                "pair": "Ahmed Soliman + Laurie Vogel",
+                "score": 78.42857142857143,
+                "sessions": 7
+            },
+            {
+                "pair": "Jeffrey Badler + Steven Leser",
+                "score": 77.0,
+                "sessions": 5
+            },
+            {
+                "pair": "Eileen Serwer + Kathleen Alfonzetti",
+                "score": 76.93333333333334,
+                "sessions": 9
+            },
+            {
+                "pair": "Shari Peters + Shirley Sherak",
+                "score": 76.91625,
+                "sessions": 8
+            },
+            {
+                "pair": "Hjordis Eythorsdottir + Scott Levine",
+                "score": 76.75,
+                "sessions": 6
+            },
+            {
+                "pair": "Moira Matthews + Patricia Averill",
+                "score": 76.586,
+                "sessions": 5
+            },
+            {
+                "pair": "Beverly Daniel + Sally Bergmeyer",
+                "score": 76.4,
+                "sessions": 5
+            }
+        ]
+    },
+    "2019": {
+        "players": [
+            {
+                "name": "Sue Falk",
+                "rating": 33.145322870957294,
+                "sigma": 1.6546025521596994,
+                "sessions": 45
+            },
+            {
+                "name": "August Boehm",
+                "rating": 32.49318956516559,
+                "sigma": 1.706780301177297,
+                "sessions": 35
+            },
+            {
+                "name": "Sabrina Silver",
+                "rating": 32.43607550135145,
+                "sigma": 1.403289000170893,
+                "sessions": 61
+            },
+            {
+                "name": "Anna Maman",
+                "rating": 31.884466893346428,
+                "sigma": 2.6734185984122116,
+                "sessions": 18
+            },
+            {
+                "name": "Paul Frean",
+                "rating": 31.83507616012503,
+                "sigma": 1.261589583914045,
+                "sessions": 65
+            },
+            {
+                "name": "Eric Ettinger",
+                "rating": 31.813142879585527,
+                "sigma": 2.1201380215950585,
+                "sessions": 25
+            },
+            {
+                "name": "Donna Ferrante",
+                "rating": 31.633536121930927,
+                "sigma": 1.766386465537514,
+                "sessions": 33
+            },
+            {
+                "name": "Joan Schussheim",
+                "rating": 31.531307855045075,
+                "sigma": 1.5393398207482776,
+                "sessions": 48
+            },
+            {
+                "name": "Sally Petrick",
+                "rating": 31.435806967037355,
+                "sigma": 1.6441877635585977,
+                "sessions": 30
+            },
+            {
+                "name": "Susan Eisner",
+                "rating": 31.12631536388484,
+                "sigma": 2.442313135066155,
+                "sessions": 18
+            },
+            {
+                "name": "Penny Mintz",
+                "rating": 30.896810809165338,
+                "sigma": 3.3771965026002952,
+                "sessions": 10
+            },
+            {
+                "name": "Jared Lilienstein",
+                "rating": 30.81149047317126,
+                "sigma": 2.12748974419072,
+                "sessions": 28
+            },
+            {
+                "name": "John Rufer",
+                "rating": 30.780824431533873,
+                "sigma": 1.7878706182066166,
+                "sessions": 36
+            },
+            {
+                "name": "Barbara Popolizio",
+                "rating": 30.380599290772974,
+                "sigma": 2.4782107463002365,
+                "sessions": 20
+            },
+            {
+                "name": "Debra S. Malbin",
+                "rating": 30.360984220047254,
+                "sigma": 3.1167962069601804,
+                "sessions": 14
+            },
+            {
+                "name": "Barbara Bernard",
+                "rating": 30.16233687931829,
+                "sigma": 3.256276242583875,
+                "sessions": 10
+            },
+            {
+                "name": "Lynn Mangum",
+                "rating": 30.134667801435608,
+                "sigma": 2.316322074213247,
+                "sessions": 18
+            },
+            {
+                "name": "Rajat Basu",
+                "rating": 30.132065446648713,
+                "sigma": 3.2477983319119064,
+                "sessions": 14
+            },
+            {
+                "name": "Stanley Sterenberg",
+                "rating": 30.108223673377825,
+                "sigma": 1.4521075125304717,
+                "sessions": 48
+            },
+            {
+                "name": "Bruce Pickover",
+                "rating": 30.054219440893736,
+                "sigma": 3.5744597563318283,
+                "sessions": 11
+            }
+        ],
+        "pairs": [
+            {
+                "pair": "John Adams + Lizbeth Adams",
+                "score": 87.5,
+                "sessions": 5
+            },
+            {
+                "pair": "Evelyn Sabin + Jim Diederich",
+                "score": 87.15125,
+                "sessions": 8
+            },
+            {
+                "pair": "Allen Kahn + Leslie Weisbrod",
+                "score": 85.795,
+                "sessions": 6
+            },
+            {
+                "pair": "Pauline E. Schafer + Susan Wollman",
+                "score": 85.12076923076923,
+                "sessions": 13
+            },
+            {
+                "pair": "Gail Kleiner + Judy Borkowsky",
+                "score": 84.314,
+                "sessions": 5
+            },
+            {
+                "pair": "Nathan Sudakoff + Philippa Weismann",
+                "score": 83.50375,
+                "sessions": 8
+            },
+            {
+                "pair": "Arlene Silverman + Jesse Reisner",
+                "score": 83.0775,
+                "sessions": 8
+            },
+            {
+                "pair": "Nancy B. Posternak + Penny Guest",
+                "score": 82.80499999999999,
+                "sessions": 6
+            },
+            {
+                "pair": "Susan Milch + Susan Whelan",
+                "score": 82.70166666666667,
+                "sessions": 6
+            },
+            {
+                "pair": "Linda Davis + Varda Sandweiss",
+                "score": 82.564,
+                "sessions": 5
+            },
+            {
+                "pair": "Glenn Eisenstein + Leni May",
+                "score": 82.285,
+                "sessions": 6
+            },
+            {
+                "pair": "Giorgia Botta + Melissa Fawer",
+                "score": 82.20272727272727,
+                "sessions": 11
+            },
+            {
+                "pair": "Ruth Perlmuth + Sharon Bernstein",
+                "score": 81.87833333333333,
+                "sessions": 6
+            },
+            {
+                "pair": "Linda Haft + Martha Minker",
+                "score": 81.63285714285715,
+                "sessions": 7
+            },
+            {
+                "pair": "Michael Lipkin + Sari Lipkin",
+                "score": 81.6,
+                "sessions": 5
+            },
+            {
+                "pair": "Ellen Friedman + Penny Breiman",
+                "score": 81.52833333333334,
+                "sessions": 6
+            },
+            {
+                "pair": "Ann Gatof + Gail Kleiner",
+                "score": 81.21375,
+                "sessions": 8
+            },
+            {
+                "pair": "Eileen Levitt + Sharon Bernstein",
+                "score": 80.96,
+                "sessions": 11
+            },
+            {
+                "pair": "Alexandra Van Horne + Donna Muscari",
+                "score": 80.77833333333334,
+                "sessions": 6
+            },
+            {
+                "pair": "Goldy Fried + Jeanette Katz",
+                "score": 80.744,
+                "sessions": 5
+            }
+        ]
+    },
+    "2018": {
+        "players": [
+            {
+                "name": "Allen Kahn",
+                "rating": 29.924126138326887,
+                "sigma": 0.9605157681700178,
+                "sessions": 137
+            },
+            {
+                "name": "Siqing Yu",
+                "rating": 28.19914742387577,
+                "sigma": 0.981827910270287,
+                "sessions": 120
+            },
+            {
+                "name": "James Southern",
+                "rating": 27.89573914386441,
+                "sigma": 1.0074334349001202,
+                "sessions": 124
+            },
+            {
+                "name": "Michael Lipkin",
+                "rating": 27.70001310709923,
+                "sigma": 0.7764546158734562,
+                "sessions": 248
+            },
+            {
+                "name": "Helen Rothstein",
+                "rating": 27.674505711984118,
+                "sigma": 0.7393377705292046,
+                "sessions": 346
+            },
+            {
+                "name": "Shari Peters",
+                "rating": 27.237851829327763,
+                "sigma": 0.7375333151574253,
+                "sessions": 356
+            },
+            {
+                "name": "Gerald Garmisa",
+                "rating": 27.10471307087273,
+                "sigma": 0.9970882894961715,
+                "sessions": 110
+            },
+            {
+                "name": "Eleanor Seaman",
+                "rating": 27.068594125127838,
+                "sigma": 1.0573222782664478,
+                "sessions": 95
+            },
+            {
+                "name": "Jack Greenberg",
+                "rating": 27.05183066087465,
+                "sigma": 0.9550738955936722,
+                "sessions": 119
+            },
+            {
+                "name": "Giorgia Botta",
+                "rating": 26.98586703352953,
+                "sigma": 0.7324718035544878,
+                "sessions": 439
+            },
+            {
+                "name": "Ken King",
+                "rating": 26.913932704763994,
+                "sigma": 1.4438442063232986,
+                "sessions": 57
+            },
+            {
+                "name": "David Yoon",
+                "rating": 26.88774323818934,
+                "sigma": 0.7262003443175917,
+                "sessions": 409
+            },
+            {
+                "name": "Harry Davidow",
+                "rating": 26.879912217857672,
+                "sigma": 1.0788741610129706,
+                "sessions": 93
+            },
+            {
+                "name": "Jeffrey Millman",
+                "rating": 26.84738869646309,
+                "sigma": 1.0409436217081822,
+                "sessions": 111
+            },
+            {
+                "name": "Linda Einhorn-Ihde",
+                "rating": 26.819468889610786,
+                "sigma": 0.7809534691530446,
+                "sessions": 242
+            },
+            {
+                "name": "Luna Benardete",
+                "rating": 26.702435497764412,
+                "sigma": 0.7653876869606653,
+                "sessions": 300
+            },
+            {
+                "name": "Winthrop Allegaert",
+                "rating": 26.598516325841146,
+                "sigma": 0.8524750556232124,
+                "sessions": 174
+            },
+            {
+                "name": "Shirley Sherak",
+                "rating": 26.499967113036327,
+                "sigma": 0.8061193548174095,
+                "sessions": 225
+            },
+            {
+                "name": "Leon Goldstein",
+                "rating": 26.44482293311919,
+                "sigma": 0.8031949023677811,
+                "sessions": 200
+            },
+            {
+                "name": "Kerry Kappell",
+                "rating": 26.355911193321397,
+                "sigma": 0.7435580613410935,
+                "sessions": 329
+            }
+        ],
+        "pairs": []
+    }
+}

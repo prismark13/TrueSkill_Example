@@ -3,168 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Performance Intelligence | Honors</title>
+    <title>Honors Bridge Club | Elite Ratings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700&display=swap');
-        
-        body { 
-            font-family: 'Public Sans', sans-serif; 
-            background: #FFF; 
-            color: #111; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --bg: #f4f7f6;
+            --card: #ffffff;
         }
 
-        /* Fixed Sidebar Controller */
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 200px;
-            background: #001E3C;
-            padding: 40px 20px;
-            color: white;
-            z-index: 100;
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .sidebar-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15rem; color: #8BA8C7; margin-bottom: 10px; }
-
-        select { 
+        .container {
             width: 100%;
-            background: transparent;
-            color: white;
-            border: 1px solid #2D4A6B;
+            max-width: 900px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 { margin: 0; font-weight: 800; letter-spacing: -1px; font-size: 2.5rem; }
+        p { color: #7f8c8d; margin-top: 5px; }
+
+        /* Controls Area */
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: var(--card);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        select, input {
             padding: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 4px;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px;
             font-size: 1rem;
+            outline: none;
+            transition: border 0.2s;
         }
 
-        /* Center Content Container */
-        .container { 
-            max-width: 1200px; 
-            width: 80%; 
-            padding: 80px 0; 
-            margin-left: 240px; /* Offset for sidebar */
+        select:focus, input:focus { border-color: var(--accent); }
+        #search-bar { flex-grow: 1; }
+
+        /* Table Styles */
+        .table-container {
+            background: var(--card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+            max-height: 80vh;
+            overflow-y: auto;
         }
 
-        /* Hero Typography */
-        .hero { margin-bottom: 80px; }
-        #display-year { font-size: 8rem; font-weight: 700; color: #001E3C; letter-spacing: -0.4rem; line-height: 0.8; margin: 0; }
-        .hero-sub { font-size: 1.1rem; color: #00558C; text-transform: uppercase; letter-spacing: 0.4rem; font-weight: 600; margin-top: 15px; }
-
-        /* Grid Layout */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
-        .section-title { 
-            font-weight: 700; font-size: 0.85rem; text-transform: uppercase; 
-            letter-spacing: 0.2rem; color: #00558C; 
-            border-bottom: 2px solid #F4F7F9; padding-bottom: 15px; margin-bottom: 25px; 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
         }
 
-        /* Table Styling */
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { text-align: left; font-size: 0.65rem; color: #A5AAB0; text-transform: uppercase; padding: 10px 0; border-bottom: 1px solid #EEE; letter-spacing: 0.05rem; }
-        td { padding: 18px 0; font-size: 1rem; border-bottom: 1px solid #F9FAFB; }
+        thead th {
+            position: sticky;
+            top: 0;
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        tbody tr { border-bottom: 1px solid #f1f2f6; transition: background 0.1s; }
+        tbody tr:hover { background-color: #f9fbff; }
         
-        .rank { width: 45px; font-weight: 700; color: #00558C; }
-        .name-col { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .val { text-align: right; font-weight: 700; color: #001E3C; width: 80px; }
-        .sessions { text-align: right; color: #8E959E; font-variant-numeric: tabular-nums; width: 80px; }
+        td { padding: 15px; }
         
+        .rank-cell { font-weight: 800; color: #bdc3c7; width: 50px; }
+        .name-cell { font-weight: 600; }
+        .rating-cell { 
+            font-family: 'Courier New', Courier, monospace; 
+            font-weight: bold; 
+            color: var(--accent); 
+        }
+        .sessions-cell { color: #95a5a6; font-size: 0.9rem; }
+
         .proven-badge {
-            font-size: 0.6rem; background-color: #E8F0FE; color: #00558C;
-            padding: 3px 6px; border-radius: 4px; margin-left: 10px;
-            font-weight: 600; vertical-align: middle;
+            font-size: 0.7rem;
+            background: #e1f5fe;
+            color: #039be5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
         }
 
-        /* Animation */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.4s ease forwards; }
+        /* Loading Spinner */
+        #loader { text-align: center; padding: 50px; font-weight: bold; color: var(--accent); }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-label">Timescale</div>
+
+<div class="container">
+    <header>
+        <h1>Honors Leaderboard</h1>
+        <p>Dynamic TrueSkill Tracking | 2019 — 2026</p>
+    </header>
+
+    <div class="controls">
         <select id="year-select" onchange="updateDashboard()">
-            <option value="2026">2026</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-            <option value="2019">2019</option>
-        </select>
+            </select>
+        <input type="text" id="search-bar" placeholder="Search for a player..." onkeyup="filterTable()">
     </div>
 
-    <div class="container">
-        <div class="hero">
-            <h1 id="display-year">2026</h1>
-            <div class="hero-sub">Performance Analysis</div>
-        </div>
+    <div id="loader">Gathering the deck...</div>
 
-        <div class="grid">
-            <div class="ledger">
-                <div class="section-title">Top 20 Individuals</div>
-                <table id="player-table">
-                    <thead><tr><th class="rank">#</th><th>Player</th><th style="text-align:right">Rating</th><th style="text-align:right">Sess</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-
-            <div class="ledger">
-                <div class="section-title">Top 20 Partnerships</div>
-                <table id="pair-table">
-                    <thead><tr><th class="rank">#</th><th>Partnership</th><th style="text-align:right">Score</th><th style="text-align:right">Sess</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let masterData = {};
-
-        async function init() {
-            try {
-                const response = await fetch('data.json');
-                masterData = await response.json();
-                updateDashboard();
-            } catch (e) {
-                console.error("Data load failed. Ensure data.json is in the docs folder.");
-            }
-        }
-
-        function updateDashboard() {
-            const year = document.getElementById('year-select').value;
-            document.getElementById('display-year').innerText = year;
-            const data = masterData[year];
-
-            if (!data) return;
-
-            renderTable('player-table', data.players, 'name', 'rating', 'sessions', false);
-            renderTable('pair-table', data.pairs, 'pair', 'score', 'sessions', true);
-        }
-
-        function renderTable(tableId, rows, nameKey, valKey, sessKey, isPct) {
-            const tbody = document.querySelector(`#${tableId} tbody`);
-            tbody.innerHTML = rows.map((row, i) => `
-                <tr class="fade-in" style="animation-delay: ${i * 0.03}s">
-                    <td class="rank">${i + 1}</td>
-                    <td class="name-col">
-                        ${row[nameKey]}
-                        ${(!isPct && row.sigma < 0.8) ? '<span class="proven-badge">PROVEN</span>' : ''}
-                    </td>
-                    <td class="val">${isPct ? row[valKey].toFixed(1) + '%' : row[valKey].toFixed(2)}</td>
-                    <td class="sessions">${row[sessKey]}</td>
+    <div class="table-container hidden" id="main-content">
+        <table id="player-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player Name</th>
+                    <th>Rating (μ-3σ)</th>
+                    <th>Sessions</th>
                 </tr>
-            `).join('');
-        }
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+</div>
 
-        init();
-    </script>
+<script>
+    let masterData = {};
+    let currentPlayers = [];
+
+    async function init() {
+        try {
+            const response = await fetch('data.json');
+            masterData = await response.json();
+            
+            const selector = document.getElementById('year-select');
+            const years = Object.keys(masterData).sort().reverse();
+
+            years.forEach(year => {
+                const opt = document.createElement('option');
+                opt.value = year;
+                opt.innerHTML = year === "All-Time" ? "🏆 All-Time Masters" : `Year: ${year}`;
+                selector.appendChild(opt);
+            });
+
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('main-content').classList.remove('hidden');
+            
+            // Auto-select most recent
+            selector.value = years.includes("2026") ? "2026" : years[0];
+            updateDashboard();
+        } catch (e) {
+            document.getElementById('loader').innerHTML = "❌ Failed to load rankings. Run export_json.py first.";
+        }
+    }
+
+    function updateDashboard() {
+        const year = document.getElementById('year-select').value;
+        currentPlayers = masterData[year].players;
+        renderTable(currentPlayers);
+    }
+
+    function renderTable(data) {
+        const tbody = document.querySelector('#player-table tbody');
+        tbody.innerHTML = '';
+
+        data.forEach((p, index) => {
+            const isProven = p.sessions >= 15 ? '<span class="proven-badge">PROVEN</span>' : '';
+            const row = `
+                <tr>
+                    <td class="rank-cell">${index + 1}</td>
+                    <td class="name-cell">${p.name} ${isProven}</td>
+                    <td class="rating-cell">${p.rating.toFixed(2)}</td>
+                    <td class="sessions-cell">${p.sessions} games</td>
+                </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', row);
+        });
+    }
+
+    function filterTable() {
+        const term = document.getElementById('search-bar').value.toLowerCase();
+        const filtered = currentPlayers.filter(p => p.name.toLowerCase().includes(term));
+        renderTable(filtered);
+    }
+
+    // Launch
+    window.onload = init;
+</script>
+
 </body>
 </html>

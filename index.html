@@ -3,212 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honors Bridge Club | historical Leaderboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Honors Bridge | Leaderboard</title>
     <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --bg: #f4f7f6;
-            --card: #ffffff;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--primary);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 900px;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        h1 { margin: 0; font-weight: 800; letter-spacing: -1px; font-size: 2.5rem; }
-        p { color: #7f8c8d; margin-top: 5px; }
-
-        /* Controls Area */
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            background: var(--card);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        select, input {
-            padding: 12px;
-            border: 1px solid #dfe6e9;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: border 0.2s;
-        }
-
-        select:focus, input:focus { border-color: var(--accent); }
-        #search-bar { flex-grow: 1; }
-
-        /* Table Styles */
-        .table-container {
-            background: var(--card);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.05);
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        thead th {
-            position: sticky;
-            top: 0;
-            background: var(--primary);
-            color: white;
-            padding: 15px;
-            font-weight: 600;
-            z-index: 10;
-        }
-
-        tbody tr { border-bottom: 1px solid #f1f2f6; transition: background 0.1s; }
-        tbody tr:hover { background-color: #f9fbff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f0f2f5; padding: 20px; color: #1c1e21; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a73e8; }
         
-        td { padding: 15px; }
+        #search-bar { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; font-size: 16px; }
         
-        .rank-cell { font-weight: 800; color: #bdc3c7; width: 50px; }
-        .name-cell { font-weight: 600; }
-        .rating-cell { 
-            font-family: 'Courier New', Courier, monospace; 
-            font-weight: bold; 
-            color: var(--accent); 
-        }
-        .sessions-cell { color: #95a5a6; font-size: 0.9rem; text-align: right; }
-
-        .proven-badge {
-            font-size: 0.7rem;
-            background: #e1f5fe;
-            color: #039be5;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 8px;
-        }
-
-        /* Loading Spinner */
-        #loader { text-align: center; padding: 50px; font-weight: bold; color: var(--accent); }
-        .hidden { display: none; }
+        table { width: 100%; border-collapse: collapse; }
+        thead th { position: sticky; top: 0; background: #f8f9fa; padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6; z-index: 10; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        
+        .rank { font-weight: bold; color: #777; width: 40px; }
+        .rating { font-family: monospace; font-weight: bold; color: #28a745; }
+        .sessions { color: #666; font-size: 0.9em; }
+        
+        .loading { text-align: center; padding: 20px; color: #666; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1>Honors Leaderboard</h1>
-        <p>Dynamic TrueSkill Ranking | 2018 — 2026</p>
-    </header>
+    <h1>Honors Bridge Leaderboard</h1>
+    
+    <input type="text" id="search-bar" placeholder="Search for a player..." onkeyup="filterTable()">
 
-    <div class="controls">
-        <select id="year-select" onchange="updateDashboard()">
-            </select>
-        <input type="text" id="search-bar" placeholder="Search for a player..." onkeyup="filterTable()">
-    </div>
-
-    <div id="loader">Shuffling the results...</div>
-
-    <div class="table-container hidden" id="main-content">
-        <table id="player-table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Player Name</th>
-                    <th>Rating (μ-3σ)</th>
-                    <th style="text-align: right;">Sessions</th>
-                </tr>
-            </thead>
-            <tbody>
-                </tbody>
-        </table>
-    </div>
+    <div id="loader" class="loading">Loading rankings...</div>
+    
+    <table id="player-table" style="display: none;">
+        <thead>
+            <tr>
+                <th class="rank">#</th>
+                <th>Player</th>
+                <th>Rating</th>
+                <th>Sessions</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
 </div>
 
 <script>
-    let masterData = {};
-    let currentPlayers = [];
+    let allPlayers = [];
 
-    async function init() {
+    async function loadLeaderboard() {
         try {
-            // Fetch data with cache-buster to ensure 2018 shows up
+            // Added ?v= timestamp to prevent caching issues
             const response = await fetch('data.json?v=' + Date.now());
-            masterData = await response.json();
+            const data = await response.json();
             
-            const selector = document.getElementById('year-select');
-            selector.innerHTML = ''; 
-
-            const keys = Object.keys(masterData);
-            // Sort years numerically descending, keep All-Time at the top
-            const years = keys.filter(k => k !== "All-Time").sort((a, b) => b - a);
+            // We use the "All-Time" key by default as our primary leaderboard
+            allPlayers = data["All-Time"].players;
             
-            if (keys.includes("All-Time")) {
-                const opt = document.createElement('option');
-                opt.value = "All-Time";
-                opt.innerHTML = "🏆 All-Time Masters";
-                selector.appendChild(opt);
-            }
-
-            years.forEach(year => {
-                const opt = document.createElement('option');
-                opt.value = year;
-                opt.innerHTML = `Year: ${year}`;
-                selector.appendChild(opt);
-            });
-
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('main-content').classList.remove('hidden');
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('player-table').style.display = 'table';
             
-            // Default to the first available year (likely 2026)
-            selector.value = years[0];
-            updateDashboard();
-
+            renderTable(allPlayers);
         } catch (e) {
-            console.error(e);
-            document.getElementById('loader').innerHTML = "❌ Database not found. Please run export_json.py first.";
+            document.getElementById('loader').innerHTML = "❌ Failed to load data. Run export_json.py first.";
         }
     }
 
-    function updateDashboard() {
-        const year = document.getElementById('year-select').value;
-        currentPlayers = masterData[year].players;
-        renderTable(currentPlayers);
-    }
-
-    function renderTable(data) {
+    function renderTable(players) {
         const tbody = document.querySelector('#player-table tbody');
         tbody.innerHTML = '';
-
-        data.forEach((p, index) => {
-            // Mark regulars as "PROVEN" if they have 10+ games in the selected view
-            const isProven = p.sessions >= 10 ? '<span class="proven-badge">PROVEN</span>' : '';
+        
+        players.forEach((p, index) => {
             const row = `
                 <tr>
-                    <td class="rank-cell">${index + 1}</td>
-                    <td class="name-cell">${p.name} ${isProven}</td>
-                    <td class="rating-cell">${p.rating.toFixed(2)}</td>
-                    <td class="sessions-cell">${p.sessions} games</td>
+                    <td class="rank">${index + 1}</td>
+                    <td><strong>${p.name}</strong></td>
+                    <td class="rating">${p.rating.toFixed(2)}</td>
+                    <td class="sessions">${p.sessions} games</td>
                 </tr>
             `;
             tbody.insertAdjacentHTML('beforeend', row);
@@ -217,11 +85,11 @@
 
     function filterTable() {
         const term = document.getElementById('search-bar').value.toLowerCase();
-        const filtered = currentPlayers.filter(p => p.name.toLowerCase().includes(term));
+        const filtered = allPlayers.filter(p => p.name.toLowerCase().includes(term));
         renderTable(filtered);
     }
 
-    window.onload = init;
+    window.onload = loadLeaderboard;
 </script>
 
 </body>

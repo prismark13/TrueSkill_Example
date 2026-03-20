@@ -3,106 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honors Bridge | Leaderboard</title>
+    <title>Partnership Performance Analytics | Executive Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, system-ui, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #1a73e8; margin-top: 0; margin-bottom: 25px; }
-        
-        .controls { display: flex; gap: 10px; margin-bottom: 20px; }
-        #year-select { padding: 10px; border-radius: 6px; border: 1px solid #ddd; font-size: 16px; background: #fff; cursor: pointer; min-width: 180px; }
-        #search-bar { flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 16px; outline: none; }
-        #search-bar:focus { border-color: #1a73e8; }
-        
-        table { width: 100%; border-collapse: collapse; }
-        thead th { position: sticky; top: 0; background: #fff; padding: 12px; text-align: left; border-bottom: 2px solid #eee; font-weight: 600; }
-        td { padding: 12px; border-bottom: 1px solid #f9f9f9; }
-        
-        .rank { font-weight: bold; color: #aaa; width: 40px; }
-        .name { font-weight: 600; color: #2c3e50; }
-        .rating { font-family: 'SFMono-Regular', Consolas, monospace; font-weight: bold; color: #27ae60; }
-        .sessions { color: #888; font-size: 0.85em; text-align: right; }
-        
-        tbody tr:hover { background: #fcfcfc; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .mckinsey-blue { color: #002d72; }
+        .bg-mckinsey { background-color: #002d72; }
+        .card { background: white; border-radius: 2px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+        .stat-label { color: #64748b; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+        select { border: 1px solid #e2e8f0; background: white; font-weight: 600; color: #002d72; padding: 4px 12px; border-radius: 4px; outline: none; }
+        .trend-up { color: #059669; }
+        .trend-down { color: #dc2626; }
+        /* Custom scrollbar for that clean look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-10">
+    <div class="max-w-6xl mx-auto">
+        
+        <header class="flex justify-between items-center border-b-2 border-slate-900 pb-6 mb-10">
+            <div>
+                <h1 class="text-2xl font-light tracking-tight mckinsey-blue uppercase">
+                    Strategic <span class="font-extrabold">Bridge Analytics</span>
+                </h1>
+                <p class="text-slate-500 text-[11px] font-medium uppercase tracking-widest">Internal Performance Audit — FY 2024-2026</p>
+            </div>
+            <div class="flex flex-col items-end">
+                <span class="stat-label mb-1">Fiscal Year</span>
+                <select id="yearFilter">
+                    <option value="all">Full Portfolio</option>
+                </select>
+            </div>
+        </header>
 
-<div class="container">
-    <h1>Honors Bridge Leaderboard</h1>
-    
-    <div class="controls">
-        <select id="year-select" onchange="changeYear()">
-            </select>
-        <input type="text" id="search-bar" placeholder="Find a player..." onkeyup="filterTable()">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="card p-6 border-l-4 border-blue-900">
+                <span class="stat-label">Market Leader (Mu)</span>
+                <div id="topMu" class="text-2xl font-bold mckinsey-blue mt-1">—</div>
+                <div class="text-[10px] text-slate-400 mt-1 uppercase font-semibold">Highest Theoretical Skill Index</div>
+            </div>
+            <div class="card p-6 border-l-4 border-emerald-600">
+                <span class="stat-label">System Efficiency (Avg %)</span>
+                <div id="topPct" class="text-2xl font-bold text-emerald-900 mt-1">—</div>
+                <div class="text-[10px] text-slate-400 mt-1 uppercase font-semibold">Highest Weighted Mean Percentage</div>
+            </div>
+            <div class="card p-6 border-l-4 border-slate-400">
+                <span class="stat-label">Data Maturity</span>
+                <div id="totalGames" class="text-2xl font-bold text-slate-700 mt-1">—</div>
+                <div class="text-[10px] text-slate-400 mt-1 uppercase font-semibold">Total Verified Sessions Scraped</div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            
+            <div class="lg:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="stat-label text-blue-900 text-sm">Partnership Performance Rankings</h2>
+                    <span class="text-[10px] text-slate-400 font-bold italic">*Ranked by Conservative Skill Estimate (Mu - 3σ)</span>
+                </div>
+                <div class="card overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 border-b border-slate-200">
+                            <tr class="text-slate-500 text-[10px] uppercase tracking-wider">
+                                <th class="px-6 py-4 font-bold">Rank</th>
+                                <th class="px-6 py-4 font-bold">Partnership Asset</th>
+                                <th class="px-6 py-4 font-bold text-center">Volume</th>
+                                <th class="px-6 py-4 font-bold text-right">Skill (Mu)</th>
+                                <th class="px-6 py-4 font-bold text-right">Weighted Avg</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pairTableBody" class="divide-y divide-slate-100">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="space-y-10">
+                <div>
+                    <h2 class="stat-label mb-4 text-blue-900 text-sm font-bold">Individual Efficiency</h2>
+                    <div class="card overflow-hidden">
+                        <div id="individualList" class="divide-y divide-slate-50">
+                            </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="stat-label mb-4 text-blue-900 text-sm font-bold">Performance Velocity</h2>
+                    <div class="card p-4">
+                        <canvas id="miniTrend" height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-20 py-10 border-t border-slate-200 flex justify-between items-center text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+            <div>Engine: Bridge-ELO-v3.2</div>
+            <div id="lastUpdated">Refreshed: 03.19.2026</div>
+        </footer>
     </div>
 
-    <table id="player-table">
-        <thead>
-            <tr>
-                <th class="rank">#</th>
-                <th>Player</th>
-                <th>Rating</th>
-                <th style="text-align: right;">Sessions</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
-</div>
+    <script>
+        let bridgeData = [];
+        let chart = null;
 
-<script>
-    let masterData = {};
-    let currentView = [];
+        async function init() {
+            try {
+                const res = await fetch('data.json');
+                bridgeData = await res.json();
+                
+                // Set Year Filter
+                const years = [...new Set(bridgeData.map(d => d.year))].sort().reverse();
+                const select = document.getElementById('yearFilter');
+                years.forEach(y => {
+                    if(y !== "Unknown") {
+                        const opt = document.createElement('option');
+                        opt.value = y; opt.textContent = `FY ${y}`;
+                        select.appendChild(opt);
+                    }
+                });
 
-    async function init() {
-        try {
-            const response = await fetch('data.json?v=' + Date.now());
-            masterData = await response.json();
-            
-            const selector = document.getElementById('year-select');
-            const keys = Object.keys(masterData);
-            
-            // Sort years numerically, move All-Time to front
-            const years = keys.filter(k => k !== "All-Time").sort((a, b) => b - a);
-            const sortedOptions = ["All-Time", ...years];
-
-            selector.innerHTML = sortedOptions.map(opt => `
-                <option value="${opt}">${opt === "All-Time" ? "🏆 All-Time (50+ Games)" : "Year: " + opt}</option>
-            `).join('');
-
-            // Start with the latest year (e.g. 2026)
-            selector.value = years[0] || "All-Time";
-            changeYear();
-        } catch (e) {
-            alert("Could not load data. Ensure export_json.py was run.");
+                select.addEventListener('change', render);
+                render();
+            } catch (err) { console.error("Data ingestion failure:", err); }
         }
-    }
 
-    function changeYear() {
-        const key = document.getElementById('year-select').value;
-        currentView = masterData[key].players;
-        render(currentView);
-    }
+        function render() {
+            const year = document.getElementById('yearFilter').value;
+            const filtered = year === 'all' ? bridgeData : bridgeData.filter(d => d.year === year);
+            
+            // 1. Process Partnership Aggregates
+            const pairMap = {};
+            filtered.forEach(d => {
+                const key = `${d.p1} & ${d.p2}`;
+                if(!pairMap[key]) {
+                    pairMap[key] = { name: key, weightedSum: 0, count: 0, mu: d.mu, sigma: d.sigma, rating: d.rating };
+                }
+                pairMap[key].weightedSum += (d.pct * d.weight);
+                pairMap[key].count++;
+                pairMap[key].mu = d.mu; // Use latest from JSON
+                pairMap[key].rating = d.rating;
+            });
 
-    function render(players) {
-        const tbody = document.querySelector('#player-table tbody');
-        tbody.innerHTML = players.map((p, i) => `
-            <tr>
-                <td class="rank">${i + 1}</td>
-                <td class="name">${p.name}</td>
-                <td class="rating">${p.rating.toFixed(2)}</td>
-                <td class="sessions">${p.sessions} games</td>
-            </tr>
-        `).join('');
-    }
+            const sortedPairs = Object.values(pairMap)
+                .filter(p => p.count >= 1)
+                .sort((a, b) => b.rating - a.rating);
 
-    function filterTable() {
-        const term = document.getElementById('search-bar').value.toLowerCase();
-        render(currentView.filter(p => p.name.toLowerCase().includes(term)));
-    }
+            // 2. Process Individual Aggregates
+            const indMap = {};
+            filtered.forEach(d => {
+                [d.p1, d.p2].forEach(name => {
+                    if(!indMap[name]) indMap[name] = { name, weightedSum: 0, count: 0 };
+                    indMap[name].weightedSum += (d.pct * d.weight);
+                    indMap[name].count++;
+                });
+            });
 
-    window.onload = init;
-</script>
+            const sortedInd = Object.values(indMap)
+                .filter(i => i.count >= 2)
+                .sort((a, b) => (b.weightedSum/b.count) - (a.weightedSum/a.count))
+                .slice(0, 8);
 
+            // 3. UI Updates
+            updateExecutiveSummary(sortedPairs, filtered.length);
+            renderTable(sortedPairs.slice(0, 15));
+            renderIndividuals(sortedInd);
+            renderChart(filtered);
+        }
+
+        function updateExecutiveSummary(pairs, totalSessions) {
+            if(pairs.length > 0) {
+                document.getElementById('topMu').textContent = pairs[0].mu.toFixed(2);
+                const bestPct = Math.max(...pairs.map(p => p.weightedSum/p.count));
+                document.getElementById('topPct').textContent = bestPct.toFixed(2) + '%';
+            }
+            document.getElementById('totalGames').textContent = totalSessions;
+        }
+
+        function renderTable(data) {
+            document.getElementById('pairTableBody').innerHTML = data.map((p, i) => `
+                <tr class="hover:bg-slate-50 transition-all cursor-default">
+                    <td class="px-6 py-4 text-xs font-bold text-slate-300">${(i+1).toString().padStart(2, '0')}</td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm font-semibold text-slate-800">${p.name}</div>
+                        <div class="text-[9px] text-slate-400 uppercase tracking-tighter">Certainty Floor: ${p.rating.toFixed(2)}</div>
+                    </td>
+                    <td class="px-6 py-4 text-center text-slate-500 text-xs font-medium">${p.count}</td>
+                    <td class="px-6 py-4 text-right text-sm font-mono font-semibold text-blue-900">${p.mu.toFixed(2)}</td>
+                    <td class="px-6 py-4 text-right text-sm font-bold mckinsey-blue">${(p.weightedSum/p.count).toFixed(2)}%</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderIndividuals(data) {
+            document.getElementById('individualList').innerHTML = data.map((p, i) => `
+                <div class="px-6 py-4 flex justify-between items-center hover:bg-slate-50">
+                    <div>
+                        <p class="text-xs font-bold text-slate-700">${p.name}</p>
+                        <p class="text-[9px] text-slate-400 uppercase">${p.count} Sessions</p>
+                    </div>
+                    <div class="text-sm font-bold mckinsey-blue">${(p.weightedSum/p.count).toFixed(1)}%</div>
+                </div>
+            `).join('');
+        }
+
+        function renderChart(data) {
+            const ctx = document.getElementById('miniTrend').getContext('2d');
+            if(chart) chart.destroy();
+            
+            const recent = data.slice(-20).map(d => d.pct);
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: recent.map((_, i) => i),
+                    datasets: [{
+                        data: recent,
+                        borderColor: '#002d72',
+                        borderWidth: 1.5,
+                        pointRadius: 0,
+                        tension: 0.3,
+                        fill: true,
+                        backgroundColor: 'rgba(0,45,114,0.03)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { 
+                            grid: { display: false },
+                            ticks: { font: { size: 9 }, color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        init();
+    </script>
 </body>
 </html>

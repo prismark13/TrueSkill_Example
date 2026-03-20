@@ -3,191 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge Rankings</title>
+    <title>Bridge Rankings | 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #fcfcfd; color: #111827; overflow-x: hidden; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fcfcfd; color: #111827; }
         h1 { font-family: 'Instrument Serif', serif; }
         .navy { color: #002d72; }
-        .glass-card { 
-            background: white; border: 1px solid #f3f4f6;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
-            border-radius: 20px; cursor: pointer; transition: all 0.2s ease;
-        }
-        .glass-card:hover { transform: translateY(-2px); box-shadow: 0 12px 20px -5px rgba(0,0,0,0.05); border-color: #002d72; }
-        .pct-badge { background: #f8fafc; border: 1px solid #e2e8f0; padding: 6px 12px; border-radius: 10px; font-weight: 800; color: #002d72; }
-        
-        /* Sidebar Panel */
-        #detailPanel {
-            position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100%;
-            background: white; box-shadow: -10px 0 30px rgba(0,0,0,0.1);
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 50;
-        }
-        #detailPanel.open { right: 0; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.2); display: none; z-index: 40; backdrop-filter: blur(4px); }
+        .glass-card { background: white; border: 1px solid #f3f4f6; border-radius: 20px; transition: all 0.3s ease; cursor: pointer; }
+        .glass-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -10px rgba(0,0,0,0.08); border-color: #002d72; }
+        .sof-badge { font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; }
+        .Elite { background: #fee2e2; color: #991b1b; }
+        .Competitive { background: #dbeafe; color: #1e40af; }
+        .Club { background: #f1f5f9; color: #475569; }
+        #sidePanel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 480px; height: 100%; background: white; box-shadow: -20px 0 60px rgba(0,0,0,0.1); transition: 0.5s ease; z-index: 100; }
+        #sidePanel.open { right: 0; }
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.2); backdrop-filter: blur(4px); display: none; z-index: 90; }
     </style>
 </head>
-<body class="p-6 md:p-12 lg:p-20">
-
+<body class="p-6 lg:p-16">
     <div class="overlay" id="overlay" onclick="closePanel()"></div>
 
-    <div id="detailPanel" class="p-8 flex flex-col">
-        <button onclick="closePanel()" class="text-gray-400 hover:text-black mb-8 self-start font-bold uppercase text-xs tracking-widest">← Close</button>
-        <div id="panelHeader" class="mb-8">
-            <h3 id="panelName" class="text-3xl font-bold navy leading-tight">Player Name</h3>
-            <p id="panelMeta" class="text-gray-400 text-sm font-bold uppercase mt-2">Historical Performance</p>
-        </div>
-        <div class="flex-grow">
-            <div class="bg-gray-50 rounded-3xl p-4 h-64 w-full">
-                <canvas id="performanceChart"></canvas>
-            </div>
-            <div class="mt-8 grid grid-cols-2 gap-4">
-                <div class="p-4 bg-blue-50 rounded-2xl">
-                    <span class="block text-[10px] font-bold text-blue-400 uppercase">Avg Efficiency</span>
-                    <span id="statPct" class="text-2xl font-black navy">0%</span>
-                </div>
-                <div class="p-4 bg-gray-50 rounded-2xl">
-                    <span class="block text-[10px] font-bold text-gray-400 uppercase">Sessions</span>
-                    <span id="statCount" class="text-2xl font-black text-gray-700">0</span>
-                </div>
-            </div>
+    <div id="sidePanel" class="p-10 flex flex-col">
+        <button onclick="closePanel()" class="mb-10 text-[10px] font-bold uppercase tracking-widest text-gray-400">← Back to List</button>
+        <h2 id="sideName" class="text-4xl font-bold navy mb-2 leading-tight">Name</h2>
+        <div id="sideSof" class="sof-badge inline-block w-max mb-8">Club</div>
+        <div class="bg-gray-50 rounded-[32px] p-6 h-64 mb-8"><canvas id="sideChart"></canvas></div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="p-6 bg-blue-50 rounded-2xl"><span class="block text-[10px] font-bold text-blue-400 uppercase mb-1">Career Avg</span><span id="sideAvg" class="text-3xl font-black navy">0%</span></div>
+            <div class="p-6 bg-gray-50 rounded-2xl"><span class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Sessions</span><span id="sideCount" class="text-3xl font-black text-gray-700">0</span></div>
         </div>
     </div>
 
     <div class="max-w-6xl mx-auto">
         <header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
-            <div class="space-y-2">
-                <div class="inline-block px-3 py-1 bg-blue-50 text-blue-700 text-[10px] font-bold uppercase tracking-widest rounded-full">Honors Bridge Club</div>
-                <h1 class="text-6xl md:text-7xl navy leading-none">Bridge <span class="italic font-light text-gray-400">Rankings</span></h1>
+            <div>
+                <div class="text-[10px] font-bold uppercase tracking-[0.3em] text-blue-600 mb-2">Honors Bridge Club</div>
+                <h1 class="text-7xl navy leading-none">Bridge <span class="italic font-light text-gray-300">Rankings</span></h1>
             </div>
-            <select id="yearFilter" class="bg-gray-100 p-3 rounded-xl font-bold text-navy outline-none border-none">
-                <option value="all">All Seasons</option>
-            </select>
+            <div class="flex gap-4">
+                <input type="text" id="search" placeholder="Search name..." class="bg-white border border-gray-200 px-4 py-2 rounded-xl text-sm outline-none focus:border-blue-900">
+                <select id="year" class="bg-white border border-gray-200 px-4 py-2 rounded-xl text-sm font-bold text-blue-900 outline-none"></select>
+            </div>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <section>
-                <h2 class="text-2xl font-bold tracking-tight mb-8">Top Partnerships</h2>
-                <div id="pairContainer" class="space-y-4"></div>
+                <h2 class="text-2xl font-bold mb-8">Top Partnerships</h2>
+                <div id="pairs" class="space-y-4"></div>
             </section>
-
             <section>
-                <h2 class="text-2xl font-bold tracking-tight mb-8">Top Players</h2>
-                <div id="playerContainer" class="space-y-4"></div>
+                <h2 class="text-2xl font-bold mb-8">Top Players</h2>
+                <div id="players" class="space-y-4"></div>
             </section>
         </div>
     </div>
 
     <script>
-        let bridgeData = [];
-        let chartInstance = null;
-
+        let data = []; let chart = null;
         async function init() {
-            const res = await fetch('data.json');
-            bridgeData = await res.json();
-            
-            const years = [...new Set(bridgeData.map(d => d.year))].sort().reverse();
-            const select = document.getElementById('yearFilter');
-            years.forEach(y => { if(y && y !== "Unknown") select.add(new Option(y, y)); });
-
-            select.addEventListener('change', render);
+            const res = await fetch('data.json'); data = await res.json();
+            const yrs = [...new Set(data.map(d => d.year))].sort().reverse();
+            yrs.forEach(y => { if(y) document.getElementById('year').add(new Option(y, y)); });
+            document.getElementById('search').addEventListener('input', render);
+            document.getElementById('year').addEventListener('change', render);
             render();
         }
 
-        function getMedal(rank) {
-            if (rank === 0) return '🥇';
-            if (rank === 1) return '🥈';
-            if (rank === 2) return '🥉';
-            return rank + 1;
-        }
+        function getMedal(i) { return i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1).toString().padStart(2, '0'); }
 
         function render() {
-            const year = document.getElementById('yearFilter').value;
-            const filtered = year === 'all' ? bridgeData : bridgeData.filter(d => d.year === year);
-            
-            const pairs = {};
+            const s = document.getElementById('search').value.toLowerCase();
+            const y = document.getElementById('year').value;
+            let filtered = data.filter(d => d.year === y);
+            if(s) filtered = filtered.filter(d => d.p1.toLowerCase().includes(s) || d.p2.toLowerCase().includes(s));
+
+            const pairMap = {};
             filtered.forEach(d => {
-                const key = `${d.p1} & ${d.p2}`;
-                if(!pairs[key]) pairs[key] = { name: key, weightedSum: 0, count: 0, rating: d.rating, mu: d.mu, games: [] };
-                pairs[key].weightedSum += (d.pct * d.weight);
-                pairs[key].count++;
-                pairs[key].games.push(d.pct);
+                const k = `${d.p1} & ${d.p2}`;
+                if(!pairMap[k]) pairMap[k] = { name: k, sum: 0, count: 0, mu: d.mu, sof: d.sof, games: [] };
+                pairMap[k].sum += (d.pct * d.weight); pairMap[k].count++; pairMap[k].games.push(d.pct);
             });
+            const sortedPairs = Object.values(pairMap).filter(p => p.count >= 2).sort((a,b) => b.mu - a.mu).slice(0, 15);
 
-            const sortedPairs = Object.values(pairs).filter(p => p.count >= 2).sort((a,b) => b.rating - a.rating).slice(0, 20);
+            const playerMap = {};
+            filtered.forEach(d => { [d.p1, d.p2].forEach(p => {
+                if(!playerMap[p]) playerMap[p] = { name: p, sum: 0, count: 0, sof: d.sof, games: [] };
+                playerMap[p].sum += (d.pct * d.weight); playerMap[p].count++; playerMap[p].games.push(d.pct);
+            })});
+            const sortedInd = Object.values(playerMap).filter(p => p.count >= 3).sort((a,b) => (b.sum/b.count) - (a.sum/a.count)).slice(0, 15);
 
-            const ind = {};
-            filtered.forEach(d => {
-                [d.p1, d.p2].forEach(p => {
-                    if(!ind[p]) ind[p] = { name: p, weightedSum: 0, count: 0, games: [] };
-                    ind[p].weightedSum += (d.pct * d.weight);
-                    ind[p].count++;
-                    ind[p].games.push(d.pct);
-                });
-            });
-
-            const sortedInd = Object.values(ind).filter(i => i.count >= 3).sort((a,b) => (b.weightedSum/b.count) - (a.weightedSum/a.count)).slice(0, 20);
-
-            document.getElementById('pairContainer').innerHTML = sortedPairs.map((p, i) => `
-                <div class="glass-card flex justify-between items-center p-5 group" onclick="openDetail('${p.name}', ${JSON.stringify(p.games).replace(/"/g, '&quot;')}, '${(p.weightedSum/p.count).toFixed(2)}', ${p.count})">
-                    <div class="flex items-center gap-5">
-                        <span class="text-lg font-bold ${i < 3 ? 'text-2xl' : 'text-gray-300'} transition-all w-8">${getMedal(i)}</span>
-                        <div>
-                            <p class="font-bold text-gray-900 leading-tight">${p.name}</p>
-                            <p class="text-[10px] text-gray-400 font-bold uppercase mt-1">${p.count} Sessions • Skill ${p.mu.toFixed(2)}</p>
-                        </div>
+            document.getElementById('pairs').innerHTML = sortedPairs.map((p, i) => `
+                <div class="glass-card flex justify-between items-center p-6" onclick="openPanel('${p.name}', ${JSON.stringify(p.games)}, '${(p.sum/p.count).toFixed(1)}', ${p.count}, '${p.sof}')">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xl font-bold ${i < 3 ? 'text-3xl' : 'text-gray-200'} w-8 text-center">${getMedal(i)}</span>
+                        <div><p class="font-bold text-slate-800">${p.name}</p>
+                        <div class="flex items-center gap-2 mt-1"><span class="sof-badge ${p.sof}">${p.sof} Field</span> <span class="text-[9px] text-gray-400 font-bold uppercase">${p.count} Games</span></div></div>
                     </div>
-                    <div class="pct-badge">${(p.weightedSum/p.count).toFixed(1)}%</div>
+                    <div class="text-xl font-black navy">${(p.sum/p.count).toFixed(1)}%</div>
                 </div>
             `).join('');
 
-            document.getElementById('playerContainer').innerHTML = sortedInd.map((p, i) => `
-                <div class="glass-card flex justify-between items-center p-5 group" onclick="openDetail('${p.name}', ${JSON.stringify(p.games).replace(/"/g, '&quot;')}, '${(p.weightedSum/p.count).toFixed(2)}', ${p.count})">
-                    <div class="flex items-center gap-5">
-                        <span class="text-lg font-bold ${i < 3 ? 'text-2xl' : 'text-gray-300'} w-8">${getMedal(i)}</span>
-                        <p class="font-bold text-gray-700 leading-tight">${p.name}</p>
+            document.getElementById('players').innerHTML = sortedInd.map((p, i) => `
+                <div class="glass-card flex justify-between items-center p-6" onclick="openPanel('${p.name}', ${JSON.stringify(p.games)}, '${(p.sum/p.count).toFixed(1)}', ${p.count}, '${p.sof}')">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xl font-bold ${i < 3 ? 'text-3xl' : 'text-gray-200'} w-8 text-center">${getMedal(i)}</span>
+                        <p class="font-bold text-slate-700">${p.name}</p>
                     </div>
-                    <div class="text-xl font-extrabold text-gray-900 pr-2">${(p.weightedSum/p.count).toFixed(1)}%</div>
+                    <div class="text-xl font-extrabold text-slate-900">${(p.sum/p.count).toFixed(1)}%</div>
                 </div>
             `).join('');
         }
 
-        function openDetail(name, scores, avg, count) {
-            document.getElementById('panelName').textContent = name;
-            document.getElementById('statPct').textContent = avg + '%';
-            document.getElementById('statCount').textContent = count;
-            document.getElementById('detailPanel').classList.add('open');
+        function openPanel(name, scores, avg, count, sof) {
+            document.getElementById('sideName').textContent = name;
+            document.getElementById('sideAvg').textContent = avg + '%';
+            document.getElementById('sideCount').textContent = count;
+            document.getElementById('sideSof').textContent = sof + " Field";
+            document.getElementById('sideSof').className = `sof-badge ${sof}`;
+            document.getElementById('sidePanel').classList.add('open');
             document.getElementById('overlay').style.display = 'block';
-
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            if(chartInstance) chartInstance.destroy();
-            
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: scores.map((_, i) => i + 1),
-                    datasets: [{
-                        data: scores,
-                        borderColor: '#002d72',
-                        backgroundColor: 'rgba(0,45,114,0.1)',
-                        fill: true, tension: 0.4, borderWidth: 3, pointRadius: 4, pointBackgroundColor: '#002d72'
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { x: { display: false }, y: { min: 30, max: 80, ticks: { font: { size: 10 } } } }
-                }
-            });
+            const ctx = document.getElementById('sideChart').getContext('2d');
+            if(chart) chart.destroy();
+            chart = new Chart(ctx, { type: 'line', data: { labels: scores.map((_, i) => i+1), datasets: [{ data: scores, borderColor: '#002d72', backgroundColor: 'rgba(0,45,114,0.05)', fill: true, tension: 0.4, borderWidth: 3, pointRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { min: 40, max: 75 } } } });
         }
-
-        function closePanel() {
-            document.getElementById('detailPanel').classList.remove('open');
-            document.getElementById('overlay').style.display = 'none';
-        }
-
+        function closePanel() { document.getElementById('sidePanel').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
         init();
     </script>
 </body>

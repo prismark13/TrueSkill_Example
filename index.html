@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Honors Bridge | Professional Analytics</title>
+    <title>Honors Bridge Analytics | Professional Edition</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
@@ -12,23 +12,33 @@
             --gold: #fbbf24; --silver: #94a3b8; --bronze: #cd7f32; 
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; padding: 60px 40px; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; padding: 60px 40px; color: #1e293b; line-height: 1.5; }
         .container { max-width: 1100px; margin: auto; }
         
-        header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; border-bottom: 1px solid var(--slate-200); padding-bottom: 40px; }
-        .branding h1 { font-family: 'Instrument Serif', serif; font-size: 84px; color: var(--navy); line-height: 0.8; }
+        header { border-bottom: 1px solid var(--slate-200); padding-bottom: 40px; margin-bottom: 40px; }
+        .branding h1 { font-family: 'Instrument Serif', serif; font-size: 72px; color: var(--navy); line-height: 1; }
         .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
         
+        /* CONTROLS & SEARCH */
         .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; }
-        .search-input { flex-grow: 1; padding: 14px 22px; border-radius: 14px; border: 1px solid var(--slate-200); font-family: inherit; font-size: 14px; outline: none; background: var(--slate-50); transition: 0.2s; }
+        .search-input { 
+            flex-grow: 1; padding: 14px 22px; border-radius: 14px; 
+            border: 1px solid var(--slate-200); font-family: inherit; font-size: 14px; 
+            outline: none; transition: 0.2s; background: var(--slate-50);
+        }
         .search-input:focus { border-color: var(--navy); background: #fff; box-shadow: 0 0 0 4px rgba(0,45,114,0.06); }
 
         .toggle-group { display: flex; background: var(--slate-100); padding: 5px; border-radius: 12px; }
         .tgl-btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--slate-400); background: none; transition: 0.2s; }
         .tgl-btn.active { background: white; color: var(--navy); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
+        /* RANKING CARDS */
         .card-list { display: flex; flex-direction: column; gap: 12px; }
-        .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 26px 30px; display: grid; grid-template-columns: 80px 1fr 150px 100px; align-items: center; cursor: pointer; transition: 0.3s; }
+        .card { 
+            background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 26px 30px; 
+            display: grid; grid-template-columns: 80px 1fr 150px 100px; align-items: center; 
+            cursor: pointer; transition: 0.3s;
+        }
         .card:hover:not(.inactive) { border-color: var(--navy); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,45,114,0.08); }
         .card.inactive { opacity: 0.4; filter: grayscale(1); border-style: dashed; cursor: default; }
         
@@ -43,6 +53,7 @@
         .badge-chem-high { background: #ecfdf5; color: var(--emerald); }
         .badge-chem-low { background: #fff1f2; color: var(--rose); }
 
+        /* SIDE PANEL */
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.1); backdrop-filter: blur(8px); display: none; z-index: 90; }
         #sidePanel { position: fixed; top: 0; right: -750px; width: 700px; height: 100%; background: white; z-index: 100; padding: 40px; transition: 0.5s; overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.1); }
         #sidePanel.open { right: 0; }
@@ -56,6 +67,7 @@
 </head>
 <body>
     <div class="overlay" id="overlay" onclick="closePanel()"></div>
+    
     <div id="sidePanel">
         <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:20px;">← CLOSE PROFILE</button>
         <h3 id="sideName" style="font-size:32px; font-weight:800; color:var(--navy); line-height: 1;">--</h3>
@@ -63,7 +75,7 @@
         <div style="height:220px; margin:30px 0;"><canvas id="sideChart"></canvas></div>
         
         <div id="individualDetails" style="display:none; margin-bottom: 40px;">
-            <div style="font-weight:800; color:var(--navy); font-size:14px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">Strategic Partner Report</div>
+            <div style="font-weight:800; color:var(--navy); font-size:14px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">Top Strategic Partners</div>
             <div id="partnerList"></div>
         </div>
 
@@ -76,19 +88,22 @@
 
     <div class="container">
         <header><div class="branding"><h1>Honors <span>Rankings</span></h1></div></header>
+        
         <div class="controls-row">
             <div class="toggle-group" id="yearGroup">
                 <button class="tgl-btn active" onclick="setYear('2026', this)">2026</button>
                 <button class="tgl-btn" onclick="setYear('2025', this)">2025</button>
-                <button class="tgl-btn" onclick="setYear('2024', this)">2024</button>
                 <button class="tgl-btn" onclick="setYear('overall', this)">All-Time</button>
             </div>
+
             <input type="text" id="searchInput" class="search-input" placeholder="Search competitors..." oninput="render()">
+
             <div class="toggle-group" id="modeGroup">
                 <button class="tgl-btn active" onclick="setMode('pairs', this)">Pairs</button>
                 <button class="tgl-btn" onclick="setMode('individuals', this)">Individuals</button>
             </div>
         </div>
+
         <div id="cardContainer" class="card-list"></div>
     </div>
 
@@ -100,7 +115,7 @@
                 const res = await fetch('./data.json');
                 db = await res.json();
                 render();
-            } catch (e) { console.error("Error loading JSON", e); }
+            } catch (e) { console.error("Error fetching data.json", e); }
         }
 
         function setYear(y, b) {
@@ -129,17 +144,18 @@
 
             list.forEach((item, i) => {
                 const isQual = item.gms >= item.quota;
+                
                 let chemB = '';
                 if (curMode === 'pairs' && isQual) {
                     const chem = item.mu - ((item.p1_mu + item.p2_mu) / 2);
                     const chemClass = chem > 0.6 ? 'badge-chem-high' : (chem < -0.6 ? 'badge-chem-low' : '');
-                    if(chemClass) chemB = `<span class="badge ${chemClass}">Synergy ${chem > 0 ? '+' : ''}${chem.toFixed(1)}</span>`;
+                    if(chemClass) {
+                        const label = chem > 0.6 ? 'High Synergy' : 'Low Synergy';
+                        chemB = `<span class="badge ${chemClass}">${label} ${chem > 0 ? '+' : ''}${chem.toFixed(1)}</span>`;
+                    }
                 }
 
-                let rankIcon = i + 1;
-                if(isQual) {
-                    if(i === 0) rankIcon = '🥇'; else if(i === 1) rankIcon = '🥈'; else if(i === 2) rankIcon = '🥉';
-                } else rankIcon = '•';
+                let rankIcon = isQual ? (i === 0 ? '🥇' : (i === 1 ? '🥈' : (i === 2 ? '🥉' : i + 1))) : '•';
 
                 const card = document.createElement('div');
                 card.className = `card ${isQual ? '' : 'inactive'}`;
@@ -169,12 +185,11 @@
             if (curMode === 'individuals') {
                 detailSection.style.display = 'block'; pList.innerHTML = '';
                 
-                // 1. DYNAMIC PARTNER LOOKUP
                 const myPartnerships = db[curYear]['pairs'].filter(p => p.name.includes(item.name));
                 const partnerData = myPartnerships.map(p => {
                     const partnerName = p.name.replace(item.name, '').replace(' & ', '').trim();
                     const synergy = p.mu - ((p.p1_mu + p.p2_mu) / 2);
-                    return { name: partnerName, synergy: synergy, history: p.h };
+                    return { name: partnerName, synergy: synergy };
                 }).sort((a,b) => b.synergy - a.synergy);
 
                 partnerData.slice(0, 3).forEach(p => {
@@ -182,17 +197,15 @@
                     pList.innerHTML += `<div class="partner-card"><span>${p.name}</span><span style="font-weight:800; color:${synColor}">${p.synergy > 0 ? '+' : ''}${p.synergy.toFixed(1)}</span></div>`;
                 });
 
-                // 2. MERGE HISTORY FOR INDIVIDUAL VIEW
-                // Collect all sessions from all partners for this individual
+                // Merge history for individual chart
                 let mergedHistory = [];
                 myPartnerships.forEach(p => mergedHistory.push(...p.h));
-                mergedHistory.sort((a,b) => new Date(a.d) - new Date(b.d)); // Sort chronologically
-
+                mergedHistory.sort((a,b) => new Date(a.d) - new Date(b.d));
+                
                 mergedHistory.slice().reverse().forEach(row => {
                     let badge = row.s >= 32 ? '<span style="color:var(--navy); font-weight:800;">[ELITE]</span>' : (row.s <= 23.5 ? '<span style="color:var(--rose);">[LTD]</span>' : '');
                     tbody.innerHTML += `<tr><td>${row.d}</td><td>${row.t} ${badge}</td><td>${row.p}%</td><td>${row.s}</td><td style="font-weight:700; color:var(--navy)">${row.m}</td></tr>`;
                 });
-                
                 renderChart(mergedHistory);
 
             } else {
@@ -212,15 +225,13 @@
             if(chart) chart.destroy();
             chart = new Chart(ctx, { 
                 type: 'line', 
-                data: { 
-                    labels: history.map(x => x.d), 
-                    datasets: [{ data: history.map(x => x.m), borderColor: '#002d72', borderWidth: 4, pointRadius: 0, tension: 0.3 }] 
-                }, 
+                data: { labels: history.map(x => x.d), datasets: [{ data: history.map(x => x.m), borderColor: '#002d72', borderWidth: 4, pointRadius: 0, tension: 0.3 }] }, 
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } } 
             });
         }
 
         function closePanel() { document.getElementById('sidePanel').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
+        
         init();
     </script>
 </body>

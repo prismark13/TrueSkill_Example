@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Honors Bridge Analytics | Professional Edition</title>
+    <title>Honors Bridge | Professional Analytics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
@@ -19,7 +19,7 @@
         .branding h1 { font-family: 'Instrument Serif', serif; font-size: 72px; color: var(--navy); line-height: 1; }
         .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
         
-        /* CONTROLS & SEARCH */
+        /* CONTROLS SECTION */
         .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; }
         .search-input { 
             flex-grow: 1; padding: 14px 22px; border-radius: 14px; 
@@ -32,7 +32,7 @@
         .tgl-btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--slate-400); background: none; transition: 0.2s; }
         .tgl-btn.active { background: white; color: var(--navy); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
-        /* RANKING CARDS */
+        /* CARDS */
         .card-list { display: flex; flex-direction: column; gap: 12px; }
         .card { 
             background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 26px 30px; 
@@ -75,13 +75,15 @@
         <div style="height:220px; margin:30px 0;"><canvas id="sideChart"></canvas></div>
         
         <div id="individualDetails" style="display:none; margin-bottom: 40px;">
-            <div style="font-weight:800; color:var(--navy); font-size:14px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">Top Strategic Partners</div>
+            <div style="font-weight:800; color:var(--navy); font-size:14px; margin-bottom:15px; text-transform:uppercase; letter-spacing:1px;">Strategic Partner Report</div>
             <div id="partnerList"></div>
         </div>
 
         <div style="font-weight:800; color:var(--navy); font-size:14px; margin-bottom:10px;" id="histTitle">SESSION HISTORY</div>
         <table class="hist-table">
-            <thead><tr><th>Date</th><th>Session</th><th>%</th><th>SoS</th><th>Rating</th></tr></thead>
+            <thead>
+                <tr><th>Date</th><th>Session</th><th>%</th><th>SoS</th><th>Rating</th><th>+/-</th></tr>
+            </thead>
             <tbody id="histBody"></tbody>
         </table>
     </div>
@@ -93,6 +95,7 @@
             <div class="toggle-group" id="yearGroup">
                 <button class="tgl-btn active" onclick="setYear('2026', this)">2026</button>
                 <button class="tgl-btn" onclick="setYear('2025', this)">2025</button>
+                <button class="tgl-btn" onclick="setYear('2024', this)">2024</button>
                 <button class="tgl-btn" onclick="setYear('overall', this)">All-Time</button>
             </div>
 
@@ -114,8 +117,9 @@
             try {
                 const res = await fetch('./data.json');
                 db = await res.json();
+                console.log("Database initialized. Buckets:", Object.keys(db));
                 render();
-            } catch (e) { console.error("Error fetching data.json", e); }
+            } catch (e) { console.error("Could not load data.json", e); }
         }
 
         function setYear(y, b) {
@@ -133,7 +137,7 @@
         }
 
         function render() {
-            if(!db) return;
+            if(!db || !db[curYear]) return;
             const query = document.getElementById('searchInput').value.toLowerCase();
             const container = document.getElementById('cardContainer');
             container.innerHTML = '';
@@ -182,9 +186,10 @@
             const tbody = document.getElementById('histBody');
             tbody.innerHTML = '';
 
+            let hData = [];
+
             if (curMode === 'individuals') {
                 detailSection.style.display = 'block'; pList.innerHTML = '';
-                
                 const myPartnerships = db[curYear]['pairs'].filter(p => p.name.includes(item.name));
                 const partnerData = myPartnerships.map(p => {
                     const partnerName = p.name.replace(item.name, '').replace(' & ', '').trim();
@@ -197,26 +202,27 @@
                     pList.innerHTML += `<div class="partner-card"><span>${p.name}</span><span style="font-weight:800; color:${synColor}">${p.synergy > 0 ? '+' : ''}${p.synergy.toFixed(1)}</span></div>`;
                 });
 
-                // Merge history for individual chart
-                let mergedHistory = [];
-                myPartnerships.forEach(p => mergedHistory.push(...p.h));
-                mergedHistory.sort((a,b) => new Date(a.d) - new Date(b.d));
-                
-                mergedHistory.slice().reverse().forEach(row => {
-                    let badge = row.s >= 32 ? '<span style="color:var(--navy); font-weight:800;">[ELITE]</span>' : (row.s <= 23.5 ? '<span style="color:var(--rose);">[LTD]</span>' : '');
-                    tbody.innerHTML += `<tr><td>${row.d}</td><td>${row.t} ${badge}</td><td>${row.p}%</td><td>${row.s}</td><td style="font-weight:700; color:var(--navy)">${row.m}</td></tr>`;
-                });
-                renderChart(mergedHistory);
-
+                myPartnerships.forEach(p => hData.push(...p.h));
+                hData.sort((a,b) => new Date(a.d) - new Date(b.d));
             } else {
                 detailSection.style.display = 'none';
-                item.h.slice().reverse().forEach(row => {
-                    let badge = row.s >= 32 ? '<span style="color:var(--navy); font-weight:800;">[ELITE]</span>' : (row.s <= 23.5 ? '<span style="color:var(--rose);">[LTD]</span>' : '');
-                    tbody.innerHTML += `<tr><td>${row.d}</td><td>${row.t} ${badge}</td><td>${row.p}%</td><td>${row.s}</td><td style="font-weight:700; color:var(--navy)">${row.m}</td></tr>`;
-                });
-                renderChart(item.h);
+                hData = item.h;
             }
 
+            // RENDER TABLE WITH DELTA (+/-)
+            hData.slice().reverse().forEach((row, idx, arr) => {
+                let deltaHtml = '<span style="color:var(--slate-400)">--</span>';
+                if (idx < arr.length - 1) {
+                    let dVal = row.m - arr[idx + 1].m;
+                    const dColor = dVal > 0 ? 'var(--emerald)' : (dVal < 0 ? 'var(--rose)' : 'var(--slate-400)');
+                    deltaHtml = `<span style="font-weight:800; color:${dColor}">${dVal > 0 ? '+' : ''}${dVal.toFixed(1)}</span>`;
+                }
+
+                let badge = row.s >= 32 ? '<span style="color:var(--navy); font-weight:800;">[ELITE]</span>' : (row.s <= 23.5 ? '<span style="color:var(--rose);">[LTD]</span>' : '');
+                tbody.innerHTML += `<tr><td>${row.d}</td><td>${row.t} ${badge}</td><td>${row.p}%</td><td>${row.s}</td><td style="font-weight:700; color:var(--navy)">${row.m}</td><td>${deltaHtml}</td></tr>`;
+            });
+
+            renderChart(hData);
             document.getElementById('sidePanel').classList.add('open'); document.getElementById('overlay').style.display = 'block';
         }
 

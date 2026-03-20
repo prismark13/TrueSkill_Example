@@ -2,183 +2,191 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge ELO - Shark Tank Tracker</title>
+    <title>Bridge Registry</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg: #121212;
-            --card: #1e1e1e;
-            --text: #e0e0e0;
-            --accent: #00e5ff;
-            --shark-red: #ff3d00;
+            --bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #717171;
+            --line: #e5e5e5;
+            --accent: #2d3436;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 20px;
+            padding: 60px 20px;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container { max-width: 1000px; margin: auto; }
+        .container { max-width: 800px; margin: auto; }
 
-        h1 { text-align: center; color: var(--accent); letter-spacing: 2px; }
+        header { 
+            border-bottom: 1px solid var(--text); 
+            margin-bottom: 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: baseline;
+            padding-bottom: 8px;
+        }
 
-        /* Tabs */
-        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .tab-btn {
-            background: var(--card);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 10px 20px;
+        h1 { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; }
+        .date-stamp { font-size: 0.8rem; color: var(--muted); }
+
+        /* Navigation */
+        .nav { display: flex; gap: 24px; margin-bottom: 40px; }
+        .nav-link {
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-decoration: none;
             cursor: pointer;
-            border-radius: 4px;
-            transition: 0.3s;
+            transition: color 0.2s;
+            font-weight: 500;
         }
-        .tab-btn.active { background: var(--accent); color: var(--bg); font-weight: bold; }
+        .nav-link:hover { color: var(--text); }
+        .nav-link.active { color: var(--text); text-decoration: underline; text-underline-offset: 6px; }
 
-        /* Chart Area */
-        #chartContainer {
-            background: var(--card);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            height: 300px;
-            border: 1px solid #333;
+        /* Performance View */
+        .visual-area { height: 160px; margin-bottom: 50px; border-bottom: 1px solid var(--line); }
+
+        /* Table Style */
+        table { width: 100%; border-collapse: collapse; }
+        th { 
+            text-align: left; 
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 0.1em; 
+            color: var(--muted); 
+            padding: 12px 8px;
+            border-bottom: 1px solid var(--line);
         }
+        td { padding: 16px 8px; font-size: 0.9rem; border-bottom: 1px dotted var(--line); }
+        tr:hover td { background-color: #fcfcfc; cursor: crosshair; }
 
-        /* Leaderboard Table */
-        table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 8px; overflow: hidden; }
-        th { background: #2a2a2a; color: var(--accent); padding: 15px; text-align: left; }
-        td { padding: 12px 15px; border-bottom: 1px solid #333; cursor: pointer; }
-        tr:hover { background: #252525; }
-
-        .rank { font-weight: bold; color: #888; width: 40px; }
-        .pair-name { font-weight: 500; color: #fff; }
-        .score { color: var(--accent); font-family: 'Courier New', Courier, monospace; font-weight: bold; }
-        .peak { font-size: 0.8em; color: #666; }
+        .mono { font-family: "SF Mono", "Roboto Mono", monospace; font-size: 0.85rem; }
+        .rank-num { width: 30px; color: var(--line); font-weight: 700; }
         
-        .badge {
-            font-size: 0.7em;
-            padding: 2px 6px;
-            border-radius: 3px;
-            margin-left: 10px;
-            text-transform: uppercase;
+        #error-msg { 
+            display: none; 
+            font-size: 0.8rem; 
+            color: #d63031; 
+            border: 1px solid #d63031; 
+            padding: 12px; 
+            margin-bottom: 20px; 
         }
-        .badge-elite { background: var(--shark-red); color: white; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>SHARK TANK ELO</h1>
+    <div id="error-msg">ENTRY DATA NOT FOUND. Verify 'data.json' is present in the root directory.</div>
 
-    <div class="tabs" id="tabGroup">
-        <button class="tab-btn active" onclick="loadView('2026')">2026 Season</button>
-        <button class="tab-btn" onclick="loadView('2025')">2025</button>
-        <button class="tab-btn" onclick="loadView('2024')">2024</button>
-        <button class="tab-btn" onclick="loadView('overall')">Lifetime</button>
+    <header>
+        <h1>Partnership Performance Registry</h1>
+        <span class="date-stamp">REF: 2024—2026</span>
+    </header>
+
+    <div class="nav" id="navBar">
+        <span class="nav-link active" onclick="setView('2026', this)">2026</span>
+        <span class="nav-link" onclick="setView('2025', this)">2025</span>
+        <span class="nav-link" onclick="setView('2024', this)">2024</span>
+        <span class="nav-link" onclick="setView('overall', this)">Cumulative</span>
     </div>
 
-    <div id="chartContainer">
-        <canvas id="eloChart"></canvas>
+    <div class="visual-area">
+        <canvas id="mainChart"></canvas>
     </div>
 
-    <table id="leaderboard">
+    <table id="dataTable">
         <thead>
             <tr>
-                <th class="rank">#</th>
+                <th class="rank-num"></th>
                 <th>Partnership</th>
-                <th>ELO Score</th>
-                <th>Peak</th>
-                <th>Status</th>
+                <th style="text-align: right;">Rating</th>
+                <th style="text-align: right;">Peak</th>
             </tr>
         </thead>
-        <tbody id="leaderboardBody">
-            </tbody>
+        <tbody id="tableBody"></tbody>
     </table>
 </div>
 
 <script>
-    let globalData = {};
-    let currentChart = null;
+    let db = null;
+    let chart = null;
 
-    // 1. Fetch the data.json we just exported
-    fetch('data/data.json')
-        .then(response => response.json())
-        .then(data => {
-            globalData = data;
-            loadView('2026'); // Default view
-        });
-
-    function loadView(viewKey) {
-        // Update Tab UI
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-
-        const list = globalData[viewKey];
-        const body = document.getElementById('leaderboardBody');
-        body.innerHTML = '';
-
-        list.forEach((entry, index) => {
-            const isElite = entry.mu > 30;
-            const row = document.createElement('tr');
-            row.onclick = () => updateChart(entry.pair, entry.history);
-            
-            row.innerHTML = `
-                <td class="rank">${index + 1}</td>
-                <td class="pair-name">${entry.pair}</td>
-                <td class="score">${entry.score.toFixed(2)}</td>
-                <td class="peak">${entry.peak || '--'}</td>
-                <td>${isElite ? '<span class="badge badge-elite">Shark</span>' : ''}</td>
-            `;
-            body.appendChild(row);
-        });
-
-        // Load the top pair into the chart by default
-        if (list.length > 0) updateChart(list[0].pair, list[0].history);
+    async function start() {
+        try {
+            // Updated to fetch from root directly
+            const res = await fetch('./data.json');
+            if (!res.ok) throw new Error();
+            db = await res.json();
+            setView('2026', document.querySelector('.nav-link.active'));
+        } catch (e) {
+            document.getElementById('error-msg').style.display = 'block';
+        }
     }
 
-    function updateChart(name, history) {
-        const ctx = document.getElementById('eloChart').getContext('2d');
+    function setView(year, element) {
+        if (!db) return;
         
-        if (currentChart) currentChart.destroy();
+        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+        element.classList.add('active');
 
-        if (!history || history.length === 0) {
-            ctx.fillText("No history data available for this pair.", 10, 50);
-            return;
-        }
+        const entries = db[year] || [];
+        const tbody = document.getElementById('tableBody');
+        tbody.innerHTML = '';
 
-        currentChart = new Chart(ctx, {
+        entries.forEach((row, i) => {
+            const tr = document.createElement('tr');
+            tr.onclick = () => updatePlot(row.pair, row.history);
+            tr.innerHTML = `
+                <td class="rank-num">${i + 1}</td>
+                <td>${row.pair}</td>
+                <td class="mono" style="text-align: right;">${row.score.toFixed(2)}</td>
+                <td class="mono" style="text-align: right; color: #b2bec3;">${row.peak ? row.peak.toFixed(2) : '--'}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        if (entries.length > 0) updatePlot(entries[0].pair, entries[0].history);
+    }
+
+    function updatePlot(label, points) {
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        if (chart) chart.destroy();
+
+        chart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: history.map(h => h.d), // Dates
+                labels: points.map(p => p.d),
                 datasets: [{
-                    label: `Rating Trend: ${name}`,
-                    data: history.map(h => h.m), // Mu values
-                    borderColor: '#00e5ff',
-                    borderWidth: 2,
+                    data: points.map(p => p.m),
+                    borderColor: '#2d3436',
+                    borderWidth: 1,
                     pointRadius: 0,
-                    tension: 0.3,
-                    fill: true,
-                    backgroundColor: 'rgba(0, 229, 255, 0.1)'
+                    tension: 0.1,
+                    fill: false
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: true } },
                 scales: {
                     x: { display: false },
-                    y: { grid: { color: '#333' }, ticks: { color: '#888' } }
-                },
-                plugins: {
-                    legend: { labels: { color: '#fff' } }
+                    y: { 
+                        grid: { borderDash: [5, 5], color: '#f0f0f0' },
+                        ticks: { color: '#b2bec3', font: { size: 9 } }
+                    }
                 }
             }
         });
     }
+
+    start();
 </script>
 
 </body>

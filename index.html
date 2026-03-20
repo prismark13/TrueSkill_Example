@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
-        :root { --navy: #002d72; --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0; --slate-400: #94a3b8; --emerald: #10b981; --rose: #f43f5e; --gold: #fbbf24; }
+        :root { --navy: #002d72; --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0; --slate-400: #94a3b8; --emerald: #10b981; --rose: #f43f5e; --gold: #fbbf24; --silver: #94a3b8; --bronze: #cd7f32; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; padding: 60px 40px; color: #1e293b; }
         .container { max-width: 1100px; margin: auto; }
@@ -15,44 +15,39 @@
         .branding h1 { font-family: 'Instrument Serif', serif; font-size: 84px; color: var(--navy); line-height: 0.8; }
         .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
         
-        /* Controls & SEARCH BAR */
         .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; }
-        .search-input { 
-            flex-grow: 1; padding: 14px 22px; border-radius: 14px; 
-            border: 1px solid var(--slate-200); font-family: inherit; font-size: 14px; 
-            outline: none; transition: 0.2s; background: var(--slate-50);
-        }
+        .search-input { flex-grow: 1; padding: 14px 22px; border-radius: 14px; border: 1px solid var(--slate-200); font-family: inherit; font-size: 14px; outline: none; background: var(--slate-50); transition: 0.2s; }
         .search-input:focus { border-color: var(--navy); background: #fff; box-shadow: 0 0 0 4px rgba(0,45,114,0.06); }
 
-        .toggle-group { display: flex; background: var(--slate-100); padding: 5px; border-radius: 12px; gap: 2px; }
+        .toggle-group { display: flex; background: var(--slate-100); padding: 5px; border-radius: 12px; }
         .tgl-btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--slate-400); background: none; transition: 0.2s; }
         .tgl-btn.active { background: white; color: var(--navy); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
-        /* Rankings List */
         .card-list { display: flex; flex-direction: column; gap: 12px; }
-        .card { 
-            background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 26px 30px; 
-            display: grid; grid-template-columns: 80px 1fr 150px 100px; align-items: center; 
-            cursor: pointer; transition: 0.3s;
-        }
+        .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 26px 30px; display: grid; grid-template-columns: 80px 1fr 150px 100px; align-items: center; cursor: pointer; transition: 0.3s; }
         .card:hover:not(.inactive) { border-color: var(--navy); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,45,114,0.08); }
         .card.inactive { opacity: 0.4; filter: grayscale(1); border-style: dashed; cursor: default; }
         
         .rank { font-size: 24px; font-weight: 800; color: var(--slate-200); }
-        .rank-1 { color: var(--gold) !important; font-size: 36px !important; }
+        .rank-1 { color: var(--gold) !important; font-size: 32px !important; }
+        .rank-2 { color: var(--silver) !important; }
+        .rank-3 { color: var(--bronze) !important; }
+
         .mu-val { font-size: 26px; font-weight: 900; color: var(--navy); text-align: right; }
-        
         .badge { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 5px; text-transform: uppercase; margin-right: 6px; margin-top: 8px; display: inline-block; }
         .badge-gms { background: var(--slate-100); color: var(--slate-400); }
-        .badge-chem { background: #ecfdf5; color: var(--emerald); }
+        .badge-chem-high { background: #ecfdf5; color: var(--emerald); }
+        .badge-chem-low { background: #fff1f2; color: var(--rose); }
 
-        /* Side Panel */
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.05); backdrop-filter: blur(10px); display: none; z-index: 90; }
-        #sidePanel { position: fixed; top: 0; right: -700px; width: 650px; height: 100%; background: white; z-index: 100; padding: 40px; transition: 0.5s; overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.05); }
+        #sidePanel { position: fixed; top: 0; right: -750px; width: 700px; height: 100%; background: white; z-index: 100; padding: 40px; transition: 0.5s; overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.05); }
         #sidePanel.open { right: 0; }
-        .hist-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 20px; }
-        .hist-table th { text-align: left; color: var(--slate-400); padding-bottom: 10px; border-bottom: 2px solid var(--slate-100); }
+        
+        .hist-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 20px; }
+        .hist-table th { text-align: left; color: var(--slate-400); padding-bottom: 10px; border-bottom: 2px solid var(--slate-100); text-transform: uppercase; }
         .hist-table td { padding: 12px 5px; border-bottom: 1px solid var(--slate-50); }
+        
+        .partner-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--slate-100); align-items: center; }
     </style>
 </head>
 <body>
@@ -60,7 +55,14 @@
     <div id="sidePanel">
         <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:20px;">← CLOSE PROFILE</button>
         <h3 id="sideName" style="font-size:32px; font-weight:800; color:var(--navy); line-height: 1;">--</h3>
+        
         <div style="height:220px; margin:30px 0;"><canvas id="sideChart"></canvas></div>
+        
+        <div id="partnerSection" style="display:none; margin-bottom: 40px;">
+            <div style="font-weight:800; color:var(--navy); font-size:14px; margin-bottom:10px;">TOP PARTNERSHIPS (BY SYNERGY)</div>
+            <div id="partnerList"></div>
+        </div>
+
         <div style="font-weight:800; color:var(--navy); font-size:14px; margin-bottom:10px;" id="histTitle">SESSION HISTORY</div>
         <table class="hist-table">
             <thead><tr><th>Date</th><th>Session</th><th>%</th><th>SoS</th><th>Rating</th></tr></thead>
@@ -70,7 +72,6 @@
 
     <div class="container">
         <header><div class="branding"><h1>Honors <span>Rankings</span></h1></div></header>
-        
         <div class="controls-row">
             <div class="toggle-group" id="yearGroup">
                 <button class="tgl-btn active" onclick="setYear('2026', this)">2026</button>
@@ -78,72 +79,44 @@
                 <button class="tgl-btn" onclick="setYear('2024', this)">2024</button>
                 <button class="tgl-btn" onclick="setYear('overall', this)">All-Time</button>
             </div>
-
             <input type="text" id="searchInput" class="search-input" placeholder="Search competitors..." oninput="render()">
-
             <div class="toggle-group" id="modeGroup">
                 <button class="tgl-btn active" onclick="setMode('pairs', this)">Pairs</button>
                 <button class="tgl-btn" onclick="setMode('individuals', this)">Individuals</button>
             </div>
         </div>
-
         <div id="cardContainer" class="card-list"></div>
     </div>
 
     <script>
         let db = null; let curYear = '2026'; let curMode = 'pairs'; let chart = null;
-
-        async function init() {
-            const res = await fetch('./data.json');
-            db = await res.json();
-            render();
-        }
-
-        function setYear(y, b) {
-            curYear = y;
-            document.querySelectorAll('#yearGroup .tgl-btn').forEach(btn => btn.classList.remove('active'));
-            b.classList.add('active');
-            render();
-        }
-
-        function setMode(m, b) {
-            curMode = m;
-            document.querySelectorAll('#modeGroup .tgl-btn').forEach(btn => btn.classList.remove('active'));
-            b.classList.add('active');
-            render();
-        }
-
+        async function init() { const res = await fetch('./data.json'); db = await res.json(); render(); }
+        
+        function setYear(y, b) { curYear = y; document.querySelectorAll('#yearGroup .tgl-btn').forEach(btn => btn.classList.remove('active')); b.classList.add('active'); render(); }
+        function setMode(m, b) { curMode = m; document.querySelectorAll('#modeGroup .tgl-btn').forEach(btn => btn.classList.remove('active')); b.classList.add('active'); render(); }
+        
         function render() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            const container = document.getElementById('cardContainer');
-            container.innerHTML = '';
-
-            // Filter by search query AND current Year/Mode state
-            const list = db[curYear][curMode]
-                .filter(item => item.name.toLowerCase().includes(query))
-                .sort((a,b) => (b.gms >= b.quota) - (a.gms >= a.quota) || b.mu - a.mu);
-
+            const container = document.getElementById('cardContainer'); container.innerHTML = '';
+            const list = db[curYear][curMode].filter(i => i.name.toLowerCase().includes(query)).sort((a,b) => (b.gms >= b.quota) - (a.gms >= a.quota) || b.mu - a.mu);
+            
             list.forEach((item, i) => {
                 const isQual = item.gms >= item.quota;
                 let chemB = '';
                 if (curMode === 'pairs' && isQual) {
                     const chem = item.mu - ((item.p1_mu + item.p2_mu) / 2);
-                    if (chem > 0.6) chemB = `<span class="badge badge-chem">Synergy +${chem.toFixed(1)}</span>`;
+                    const chemClass = chem > 0.6 ? 'badge-chem-high' : (chem < -0.6 ? 'badge-chem-low' : '');
+                    if(chemClass) chemB = `<span class="badge ${chemClass}">Synergy ${chem > 0 ? '+' : ''}${chem.toFixed(1)}</span>`;
                 }
-                const card = document.createElement('div');
-                card.className = `card ${isQual ? '' : 'inactive'}`;
+
+                let rankIcon = i + 1;
+                if(isQual) {
+                    if(i === 0) rankIcon = '🥇'; else if(i === 1) rankIcon = '🥈'; else if(i === 2) rankIcon = '🥉';
+                } else rankIcon = '•';
+
+                const card = document.createElement('div'); card.className = `card ${isQual ? '' : 'inactive'}`;
                 if (isQual) card.onclick = () => openPanel(item);
-                
-                card.innerHTML = `
-                    <div class="rank ${i===0 && isQual ? 'rank-1' : ''}">${isQual ? (i===0 ? '🥇' : i+1) : '•'}</div>
-                    <div>
-                        <div style="font-weight:700; font-size:18px;">${item.name}</div>
-                        <span class="badge badge-gms">${item.gms} Sessions • ${item.avg_pct}% Avg</span>
-                        ${chemB}
-                    </div>
-                    <div class="mu-val">${item.mu.toFixed(1)}</div>
-                    <div style="text-align:right; font-weight:600; color:var(--slate-400);">${item.mu.toFixed(1)}</div>
-                `;
+                card.innerHTML = `<div class="rank ${isQual && i<3 ? 'rank-'+(i+1) : ''}">${rankIcon}</div><div><div style="font-weight:700; font-size:18px;">${item.name}</div><span class="badge badge-gms">${item.gms} Sessions • ${item.avg_pct}% Avg</span>${chemB}</div><div class="mu-val">${item.mu.toFixed(1)}</div><div style="text-align:right; font-weight:600; color:var(--slate-400);">${item.mu.toFixed(1)}</div>`;
                 container.appendChild(card);
             });
         }
@@ -151,9 +124,30 @@
         function openPanel(item) {
             document.getElementById('sideName').textContent = item.name;
             document.getElementById('histTitle').textContent = `${curYear.toUpperCase()} SESSION HISTORY`;
+            
+            // Partner Logic for Individuals
+            const pSection = document.getElementById('partnerSection');
+            const pList = document.getElementById('partnerList');
+            if (curMode === 'individuals') {
+                pSection.style.display = 'block'; pList.innerHTML = '';
+                const partners = db[curYear]['pairs']
+                    .filter(p => p.name.includes(item.name))
+                    .map(p => {
+                        const partnerName = p.name.replace(item.name, '').replace(' & ', '').trim();
+                        const synergy = p.mu - ((p.p1_mu + p.p2_mu) / 2);
+                        return { name: partnerName, synergy: synergy, mu: p.mu };
+                    })
+                    .sort((a,b) => b.synergy - a.synergy);
+                
+                partners.slice(0, 3).forEach(p => {
+                    pList.innerHTML += `<div class="partner-row"><span>${p.name}</span><span style="font-weight:800; color:${p.synergy > 0 ? 'var(--emerald)' : 'var(--rose)'}">${p.synergy > 0 ? '+' : ''}${p.synergy.toFixed(1)} Synergy</span></div>`;
+                });
+            } else { pSection.style.display = 'none'; }
+
             const tbody = document.getElementById('histBody'); tbody.innerHTML = '';
             item.h.slice().reverse().forEach(row => {
-                tbody.innerHTML += `<tr><td>${row.d}</td><td style="color:#666">${row.t || 'Club Game'}</td><td>${row.p}%</td><td>${row.s}</td><td style="font-weight:700; color:var(--navy)">${row.m}</td></tr>`;
+                let badge = row.s >= 32 ? '<span style="color:#002d72; font-weight:800;">[ELITE]</span>' : (row.s <= 23.5 ? '<span style="color:#be123c;">[LTD]</span>' : '');
+                tbody.innerHTML += `<tr><td>${row.d}</td><td>${row.t} ${badge}</td><td>${row.p}%</td><td>${row.s}</td><td style="font-weight:700; color:var(--navy)">${row.m}</td></tr>`;
             });
 
             document.getElementById('sidePanel').classList.add('open'); document.getElementById('overlay').style.display = 'block';
@@ -161,9 +155,7 @@
             if(chart) chart.destroy();
             chart = new Chart(ctx, { type: 'line', data: { labels: item.h.map(x => x.d), datasets: [{ data: item.h.map(x => x.m), borderColor: '#002d72', borderWidth: 4, pointRadius: 0, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } } });
         }
-
         function closePanel() { document.getElementById('sidePanel').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
-        
         init();
     </script>
 </body>

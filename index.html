@@ -2,53 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Honors Bridge | Rankings Dashboard</title>
+    <title>Honors Bridge | Analytics Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root { 
             --navy: #002d72; --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0; 
-            --slate-400: #94a3b8; --blue-text: #1e40af; --up: #059669; --down: #dc2626; --gold: #fbbf24; 
+            --slate-400: #94a3b8; --emerald: #10b981; --rose: #f43f5e; --gold: #fbbf24; 
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; padding: 60px 40px; color: #1e293b; }
         .container { max-width: 1100px; margin: auto; }
-
+        
+        /* Header & Branding */
         header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; border-bottom: 1px solid var(--slate-200); padding-bottom: 40px; }
         .branding h1 { font-family: 'Instrument Serif', serif; font-size: 84px; color: var(--navy); line-height: 0.8; }
         .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
-        .club-tag { font-size: 11px; font-weight: 800; letter-spacing: 5px; color: var(--blue-text); text-transform: uppercase; margin-bottom: 20px; display: block; }
+        .club-tag { font-size: 11px; font-weight: 800; letter-spacing: 5px; color: var(--navy); text-transform: uppercase; margin-bottom: 20px; display: block; }
         
-        .nav { display: flex; gap: 30px; }
-        .nav-btn { background: none; border: none; font-family: inherit; font-weight: 700; font-size: 15px; color: var(--slate-400); cursor: pointer; padding: 10px 0; border-bottom: 2px solid transparent; transition: 0.3s; }
-        .nav-btn.active { color: var(--navy); border-bottom-color: var(--navy); }
+        /* Navigation Controls */
+        .nav-controls { display: flex; gap: 20px; align-items: center; }
+        .mode-toggle { display: flex; background: var(--slate-100); padding: 5px; border-radius: 12px; }
+        .mode-btn { padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--slate-400); background: none; transition: 0.2s; }
+        .mode-btn.active { background: white; color: var(--navy); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
-        /* Club Highs Summary */
-        .club-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 60px; }
-        .stat-card { background: var(--slate-50); padding: 30px; border-radius: 24px; border: 1px solid var(--slate-100); }
-        .stat-card label { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--slate-400); letter-spacing: 2px; display: block; margin-bottom: 10px; }
-        .stat-card .val { font-size: 32px; font-weight: 900; color: var(--navy); }
-        .stat-card .sub { font-size: 13px; font-weight: 600; color: var(--blue-text); margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        /* Search Bar */
+        .search-area { margin-bottom: 30px; }
+        .search-input { width: 100%; padding: 18px 25px; border-radius: 16px; border: 1px solid var(--slate-200); font-family: inherit; font-size: 15px; outline: none; transition: 0.3s; }
+        .search-input:focus { border-color: var(--navy); box-shadow: 0 0 0 4px rgba(0,45,114,0.08); }
 
-        /* Leaderboard */
-        .list-header { display: grid; grid-template-columns: 60px 1fr 120px 100px; padding: 0 30px 15px 30px; font-size: 11px; font-weight: 800; color: var(--slate-400); text-transform: uppercase; border-bottom: 1px solid var(--slate-100); }
-        .card-list { display: flex; flex-direction: column; gap: 10px; }
-        .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 16px; padding: 24px 30px; display: grid; grid-template-columns: 60px 1fr 120px 100px; align-items: center; cursor: pointer; transition: 0.2s; }
-        .card:hover:not(.inactive) { background: var(--slate-50); border-color: var(--navy); transform: scale(1.01); }
-        .card.inactive { opacity: 0.4; filter: grayscale(1); border-style: dashed; cursor: default; }
+        /* Leaderboard Styling */
+        .list-header { display: grid; grid-template-columns: 80px 1fr 150px 100px; padding: 0 30px 15px 30px; font-size: 11px; font-weight: 800; color: var(--slate-400); text-transform: uppercase; letter-spacing: 1px; }
+        .card-list { display: flex; flex-direction: column; gap: 12px; }
+        .card { 
+            background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 26px 30px; 
+            display: grid; grid-template-columns: 80px 1fr 150px 100px; align-items: center; 
+            cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card:hover { border-color: var(--navy); transform: translateY(-3px) scale(1.01); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.05); }
         
-        .rank { font-size: 20px; font-weight: 800; color: var(--slate-200); }
-        .rank-1 { color: var(--gold) !important; font-size: 32px !important; }
-        .pair-name { font-size: 18px; font-weight: 700; color: var(--navy); }
-        .elo-val { font-size: 24px; font-weight: 900; color: var(--navy); text-align: right; }
-        .peak-val { font-size: 14px; font-weight: 600; color: var(--slate-400); text-align: right; }
+        .rank { font-size: 22px; font-weight: 800; color: var(--slate-200); }
+        .rank-1 { color: var(--gold) !important; font-size: 34px !important; }
+        
+        .name-container { display: flex; flex-direction: column; gap: 4px; }
+        .name { font-size: 19px; font-weight: 700; color: var(--navy); }
+        
+        .mu-val { font-size: 26px; font-weight: 900; color: var(--navy); text-align: right; }
+        .peak-val { font-size: 15px; font-weight: 600; color: var(--slate-400); text-align: right; }
 
-        /* Sidebar Overlay */
-        .overlay { position: fixed; inset: 0; background: rgba(0,45,114,0.05); backdrop-filter: blur(10px); display: none; z-index: 90; }
-        #sidePanel { position: fixed; top: 0; right: -600px; width: 550px; height: 100%; background: white; z-index: 100; padding: 60px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -30px 0 90px rgba(0,0,0,0.1); }
+        /* Badge Styling */
+        .badge-row { display: flex; gap: 8px; margin-top: 6px; }
+        .badge { font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-gms { background: var(--slate-50); color: var(--slate-400); border: 1px solid var(--slate-200); }
+        .badge-chem { background: #ecfdf5; color: var(--emerald); }
+        .badge-chem-low { background: #fff1f2; color: var(--rose); }
+
+        /* Side Panel Stats */
+        .overlay { position: fixed; inset: 0; background: rgba(0,45,114,0.1); backdrop-filter: blur(8px); display: none; z-index: 90; }
+        #sidePanel { 
+            position: fixed; top: 0; right: -650px; width: 600px; height: 100%; 
+            background: white; z-index: 100; padding: 60px; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: -30px 0 90px rgba(0,0,0,0.1);
+        }
         #sidePanel.open { right: 0; }
-        .chart-container { background: var(--slate-50); border-radius: 24px; height: 320px; margin: 40px 0; padding: 20px; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .stat-box { background: var(--slate-50); padding: 25px; border-radius: 18px; border: 1px solid #eee; }
+        .stat-box label { font-size: 10px; font-weight: 800; color: var(--slate-400); text-transform: uppercase; display: block; margin-bottom: 8px; }
+        .stat-box .val { font-size: 28px; font-weight: 900; color: var(--navy); }
     </style>
 </head>
 <body>
@@ -56,13 +77,12 @@
     <div class="overlay" id="overlay" onclick="closePanel()"></div>
 
     <div id="sidePanel">
-        <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:40px;">← RETURN</button>
-        <h3 id="sideName" style="font-size:38px; font-weight:800; color:var(--navy);">Partnership</h3>
-        <div class="chart-container"><canvas id="sideChart"></canvas></div>
-        <div style="background:var(--slate-50); padding:30px; border-radius:20px;">
-            <label style="font-size:10px; font-weight:800; color:var(--slate-400);">PERSONAL BEST</label>
-            <div id="sidePB" style="font-size:32px; font-weight:900; color:var(--navy);">0.0</div>
-            <div id="sidePBDate" style="font-size:11px; color:var(--slate-400); margin-top:4px;">Date</div>
+        <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:40px; letter-spacing:1px;">← BACK TO REGISTRY</button>
+        <h3 id="sideName" style="font-size:38px; font-weight:800; color:var(--navy); line-height:1;">Player Profile</h3>
+        <div style="height:320px; margin:40px 0;"><canvas id="sideChart"></canvas></div>
+        <div class="stat-grid">
+            <div class="stat-box"><label>All-Time Peak</label><div id="sidePB" class="val">--</div></div>
+            <div class="stat-box"><label>Avg Schedule Strength</label><div id="sideSoS" class="val">--</div></div>
         </div>
     </div>
 
@@ -72,112 +92,91 @@
                 <span class="club-tag">Honors Bridge Club</span>
                 <h1>Honors <span>Rankings</span></h1>
             </div>
-            <div class="nav">
-                <button class="nav-btn active" onclick="setView('2026', this)">2026 Season</button>
-                <button class="nav-btn" onclick="setView('2025', this)">2025</button>
-                <button class="nav-btn" onclick="setView('2024', this)">2024</button>
-                <button class="nav-btn" onclick="setView('overall', this)">Cumulative</button>
+            <div class="nav-controls">
+                <div class="mode-toggle">
+                    <button class="mode-btn active" onclick="switchMode('pairs', this)">Partnerships</button>
+                    <button class="mode-btn" onclick="switchMode('individuals', this)">Individuals</button>
+                </div>
             </div>
         </header>
 
-        <div class="club-stats">
-            <div class="stat-card">
-                <label>Club All-Time High</label>
-                <div id="recScore" class="val">--</div>
-                <div id="recPair" class="sub">--</div>
-            </div>
-            <div class="stat-card">
-                <label>Most Active Duo</label>
-                <div id="actGames" class="val">--</div>
-                <div id="actPair" class="sub">--</div>
-            </div>
+        <div class="search-area"><input type="text" id="searchInput" class="search-input" placeholder="Search by name, partner, or rank..." oninput="render()"></div>
+        
+        <div class="list-header">
+            <div>Rank</div>
+            <div>Competitor</div>
+            <div style="text-align: right;">TrueSkill Rating</div>
+            <div style="text-align: right;">Peak</div>
         </div>
-
-        <div class="main-layout">
-            <div class="list-header">
-                <div>Rank</div>
-                <div>Partnership</div>
-                <div style="text-align: right;">TrueSkill</div>
-                <div style="text-align: right;">Peak</div>
-            </div>
-            <div id="cardContainer" class="card-list"></div>
-        </div>
+        
+        <div id="cardContainer" class="card-list"></div>
     </div>
 
     <script>
-        let fullData = null; let activeChart = null;
-
+        let db = null; let mode = 'pairs'; let activeChart = null;
         async function init() {
             try {
-                const res = await fetch('./data.json');
-                const json = await res.json();
-                fullData = json.data;
-                document.getElementById('recScore').textContent = json.records.allTimeHigh.score;
-                document.getElementById('recPair').textContent = json.records.allTimeHigh.pair;
-                document.getElementById('actGames').textContent = json.records.mostActive.games + " Games";
-                document.getElementById('actPair').textContent = json.records.mostActive.pair;
-                setView('2026', document.querySelector('.nav-btn.active'));
-            } catch (e) { console.error("Data load failed", e); }
+                const res = await fetch('./data.json'); 
+                db = await res.json();
+                render();
+            } catch (e) { console.error("Data.json not found in root."); }
         }
-
-        function getTrend(history, current) {
-            if (!history || history.length < 3) return '';
-            const avg = history.slice(-4, -1).reduce((a, b) => a + b.m, 0) / 3;
-            if (current > avg + 0.2) return '<span style="color:var(--up); margin-left:8px;">▲</span>';
-            if (current < avg - 0.2) return '<span style="color:var(--down); margin-left:8px;">▼</span>';
-            return '';
-        }
-
-        function setView(view, btn) {
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        function switchMode(m, btn) {
+            mode = m;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            render();
+        }
+        function render() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
             const container = document.getElementById('cardContainer');
             container.innerHTML = '';
-            const sorted = fullData[view].sort((a,b) => b.active - a.active || b.score - a.score);
+            
+            const filtered = db[mode].filter(item => item.name.toLowerCase().includes(query));
+            filtered.forEach((item, i) => {
+                let chemistryBadge = '';
+                if (mode === 'pairs') {
+                    const chem = item.mu - ((item.p1_mu + item.p2_mu) / 2);
+                    if (chem > 0.7) chemistryBadge = `<span class="badge badge-chem">High Synergy +${chem.toFixed(1)}</span>`;
+                    else if (chem < -0.7) chemistryBadge = `<span class="badge badge-chem-low">Low Synergy ${chem.toFixed(1)}</span>`;
+                }
 
-            sorted.forEach((item, i) => {
                 const card = document.createElement('div');
-                card.className = `card ${item.active ? '' : 'inactive'}`;
-                if(item.active) card.onclick = () => openPanel(item);
-                
-                let rankText = item.active ? (i + 1) : '•';
-                if(item.active && i === 0) rankText = '🥇';
-
+                card.className = 'card';
+                card.onclick = () => openPanel(item);
                 card.innerHTML = `
-                    <div class="rank ${item.active && i === 0 ? 'rank-1' : ''}">${rankText}</div>
-                    <div>
-                        <div class="pair-name">${item.pair}${item.active ? getTrend(item.history, item.score) : ''}</div>
-                        ${item.active ? '' : `<div style="font-size:10px; color:var(--slate-400); font-weight:800; margin-top:4px;">PROGRESS: ${item.p_gms}/${item.p_quota}</div>`}
+                    <div class="rank ${i === 0 ? 'rank-1' : ''}">${i === 0 ? '🥇' : i+1}</div>
+                    <div class="name-container">
+                        <div class="name">${item.name}</div>
+                        <div class="badge-row">
+                            <span class="badge badge-gms">${item.gms} Sessions</span>
+                            ${chemistryBadge}
+                        </div>
                     </div>
-                    <div class="elo-val">${item.score.toFixed(1)}</div>
-                    <div class="peak-val">${item.pb.toFixed(1)}</div>
+                    <div class="mu-val">${item.mu.toFixed(1)}</div>
+                    <div class="peak-val">${(item.pb || item.mu).toFixed(1)}</div>
                 `;
                 container.appendChild(card);
             });
         }
-
         function openPanel(item) {
-            document.getElementById('sideName').textContent = item.pair;
-            document.getElementById('sidePB').textContent = item.pb.toFixed(1);
-            document.getElementById('sidePBDate').textContent = "Set on: " + (item.pb_date || 'N/A');
+            document.getElementById('sideName').textContent = item.name;
+            document.getElementById('sidePB').textContent = (item.pb || item.mu).toFixed(1);
+            const sos = item.h.length > 0 ? (item.h.reduce((a,b) => a + (b.sos || 25), 0) / item.h.length).toFixed(1) : "25.0";
+            document.getElementById('sideSoS').textContent = sos;
             document.getElementById('sidePanel').classList.add('open');
             document.getElementById('overlay').style.display = 'block';
             const ctx = document.getElementById('sideChart').getContext('2d');
             if(activeChart) activeChart.destroy();
-            activeChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: item.history.map(h => h.d),
-                    datasets: [{ 
-                        data: item.history.map(h => h.m), 
-                        borderColor: '#002d72', borderWidth: 4, pointRadius: 0, tension: 0.3, 
-                        fill: true, backgroundColor: 'rgba(0,45,114,0.02)' 
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } }
+            activeChart = new Chart(ctx, { 
+                type: 'line', 
+                data: { 
+                    labels: item.h.map(x => x.d), 
+                    datasets: [{ data: item.h.map(x => x.m), borderColor: '#002d72', borderWidth: 4, pointRadius: 0, tension: 0.3, fill: true, backgroundColor: 'rgba(0,45,114,0.02)' }] 
+                }, 
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { grid: { color: '#f1f5f9' } } } } 
             });
         }
-
         function closePanel() { document.getElementById('sidePanel').classList.remove('open'); document.getElementById('overlay').style.display = 'none'; }
         init();
     </script>

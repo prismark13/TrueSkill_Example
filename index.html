@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge Rankings | TrueSkill Edition</title>
+    <title>Bridge Performance | Dynamic TrueSkill</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     
@@ -24,6 +24,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fcfcfd; color: #1e293b; padding: 40px; }
         
+        /* Header & Navigation */
         header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; border-bottom: 1px solid var(--slate-200); padding-bottom: 30px; }
         .branding h1 { font-family: 'Instrument Serif', serif; font-size: 80px; color: var(--navy); line-height: 0.9; }
         .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
@@ -32,10 +33,12 @@
         .controls { display: flex; gap: 15px; }
         .search-box, .year-select { padding: 12px 20px; border-radius: 12px; border: 1px solid var(--slate-200); font-family: inherit; font-weight: 600; color: var(--navy); outline: none; }
 
+        /* Dashboard Grid */
         .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         h2 { font-size: 28px; font-weight: 800; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: baseline; }
         h2 small { font-size: 10px; color: var(--slate-400); text-transform: uppercase; letter-spacing: 2px; }
 
+        /* Cards */
         .card-list { display: flex; flex-direction: column; gap: 20px; }
         .card { 
             background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 25px; 
@@ -52,15 +55,12 @@
         .badge { font-size: 9px; font-weight: 800; padding: 3px 10px; border-radius: 6px; text-transform: uppercase; }
         .badge.Elite { background: var(--elite-bg); color: var(--elite-text); }
         .badge.Club { background: var(--slate-50); color: var(--slate-400); }
-        .session-count { font-size: 10px; color: var(--slate-400); font-weight: 700; margin-left: 8px; }
 
         .metric-group { text-align: right; }
         .ts-hero { font-size: 28px; font-weight: 900; color: var(--navy); line-height: 1; }
         .avg-sub { font-size: 11px; font-weight: 700; color: var(--slate-400); margin-top: 4px; display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
         
-        .trend-icon.up { color: var(--trend-up); }
-        .trend-icon.down { color: var(--trend-down); }
-
+        /* Sidebar Overlay */
         .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.15); backdrop-filter: blur(8px); display: none; z-index: 90; }
         #sidePanel { 
             position: fixed; top: 0; right: -500px; width: 480px; height: 100%; 
@@ -85,7 +85,7 @@
     <div id="sidePanel">
         <button class="close-btn" onclick="closePanel()">← Back to Rankings</button>
         <h3 id="sideName" style="font-size: 32px; font-weight: 800; color: var(--navy);">Name</h3>
-        <p id="sideSoS" style="font-size: 11px; font-weight: 800; color: var(--blue-text); text-transform: uppercase; margin-top: 10px;">Schedule: Elite Field</p>
+        <p id="sideSoS" style="font-size: 11px; font-weight: 800; color: var(--blue-text); text-transform: uppercase; margin-top: 10px;">Field Grade: Elite</p>
         
         <div class="chart-container">
             <canvas id="performanceChart"></canvas>
@@ -109,19 +109,19 @@
             <h1>Bridge <span>Rankings</span></h1>
         </div>
         <div class="controls">
-            <input type="text" id="searchInput" class="search-box" placeholder="Filter names...">
+            <input type="text" id="searchInput" class="search-box" placeholder="Find player...">
             <select id="yearSelect" class="year-select"></select>
         </div>
     </header>
 
     <div class="dashboard-grid">
         <section>
-            <h2>Partnerships <small>Ranked by TrueSkill</small></h2>
+            <h2>Partnerships <small>TrueSkill Sorted</small></h2>
             <div id="pairList" class="card-list"></div>
         </section>
 
         <section>
-            <h2>Individuals <small>Ranked by TrueSkill</small></h2>
+            <h2>Individuals <small>Career Mu</small></h2>
             <div id="playerList" class="card-list"></div>
         </section>
     </div>
@@ -157,8 +157,8 @@
             if (!history || history.length < 2) return '';
             const lastGame = history[history.length - 1];
             return lastGame > currentAvg 
-                ? '<span class="trend-icon up">↑</span>' 
-                : '<span class="trend-icon down">↓</span>';
+                ? '<span style="color:#059669">↑</span>' 
+                : '<span style="color:#dc2626">↓</span>';
         }
 
         function render() {
@@ -168,6 +168,7 @@
             
             if(search) filtered = filtered.filter(d => d.p1.toLowerCase().includes(search) || d.p2.toLowerCase().includes(search));
 
+            // Partnerships (Ranked by Mu)
             const pairs = {};
             filtered.forEach(d => {
                 const k = `${d.p1} & ${d.p2}`;
@@ -176,29 +177,21 @@
                 pairs[k].count++;
                 pairs[k].games.push(d.pct);
             });
-            
-            const sortedPairs = Object.values(pairs)
-                .filter(p => p.count >= 2)
-                .sort((a,b) => b.mu - a.mu)
-                .slice(0, 20);
+            const sortedPairs = Object.values(pairs).filter(p => p.count >= 2).sort((a,b) => b.mu - a.mu).slice(0, 20);
 
+            // Individuals (Ranked by Mu)
             const players = {};
-            filtered.forEach(d => {
-                [d.p1, d.p2].forEach(p => {
-                    if(!players[p]) players[p] = { name: p, rawSum: 0, count: 0, mu: d.mu, sof: d.sof, games: [] };
-                    players[p].rawSum += d.pct;
-                    players[p].count++;
-                    players[p].games.push(d.pct);
-                    if(d.mu > players[p].mu) players[p].mu = d.mu;
-                });
-            });
+            filtered.forEach(d => { [d.p1, d.p2].forEach(p => {
+                if(!players[p]) players[p] = { name: p, rawSum: 0, count: 0, mu: d.mu, sof: d.sof, games: [] };
+                players[p].rawSum += d.pct;
+                players[p].count++;
+                players[p].games.push(d.pct);
+                if(d.mu > players[p].mu) players[p].mu = d.mu;
+            })});
+            const sortedPlayers = Object.values(players).filter(p => p.count >= 3).sort((a,b) => b.mu - a.mu).slice(0, 20);
 
-            const sortedPlayers = Object.values(players)
-                .filter(p => p.count >= 3)
-                .sort((a,b) => b.mu - a.mu)
-                .slice(0, 20);
-
-            document.getElementById('pairList').innerHTML = sortedPairs.map((p, i) => {
+            // Render logic
+            const renderCard = (p, i) => {
                 const avg = (p.rawSum/p.count);
                 return `
                 <div class="card" onclick="openPanel('${p.name}', ${JSON.stringify(p.games)}, '${avg.toFixed(1)}', '${p.mu.toFixed(2)}', '${p.sof}')">
@@ -208,47 +201,26 @@
                             <div class="name">${p.name}</div>
                             <div class="meta">
                                 <span class="badge ${p.sof}">${p.sof} FIELD</span>
-                                <span class="session-count">${p.count} GAMES</span>
+                                <span style="font-size:10px; color:var(--slate-400); font-weight:800; margin-left:8px;">${p.count} GAMES</span>
                             </div>
                         </div>
                     </div>
                     <div class="metric-group">
                         <div class="ts-hero">${p.mu.toFixed(1)}</div>
-                        <div class="avg-sub">
-                            ${getTrend(p.games, avg)} ${avg.toFixed(1)}% Avg
-                        </div>
+                        <div class="avg-sub">${getTrend(p.games, avg)} ${avg.toFixed(1)}% Avg</div>
                     </div>
-                </div>
-            `}).join('');
+                </div>`;
+            };
 
-            document.getElementById('playerList').innerHTML = sortedPlayers.map((p, i) => {
-                const avg = (p.rawSum/p.count);
-                return `
-                <div class="card" onclick="openPanel('${p.name}', ${JSON.stringify(p.games)}, '${avg.toFixed(1)}', '${p.mu.toFixed(2)}', '${p.sof}')">
-                    <div class="card-left">
-                        <div class="rank ${i < 3 ? 'medal' : ''}">${getRank(i)}</div>
-                        <div class="info">
-                            <div class="name">${p.name}</div>
-                            <div class="meta">
-                                <span class="session-count">${p.count} GAMES</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="metric-group">
-                        <div class="ts-hero">${p.mu.toFixed(1)}</div>
-                        <div class="avg-sub">
-                             ${getTrend(p.games, avg)} ${avg.toFixed(1)}% Avg
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
+            document.getElementById('pairList').innerHTML = sortedPairs.map(renderCard).join('');
+            document.getElementById('playerList').innerHTML = sortedPlayers.map(renderCard).join('');
         }
 
         function openPanel(name, scores, avg, mu, sof) {
             document.getElementById('sideName').textContent = name;
             document.getElementById('sideAvg').textContent = avg + '%';
             document.getElementById('sideTS').textContent = mu;
-            document.getElementById('sideSoS').textContent = "Schedule: " + (sof || "Club");
+            document.getElementById('sideSoS').textContent = "Field Grade: " + (sof || "Club");
             document.getElementById('sidePanel').classList.add('open');
             document.getElementById('overlay').style.display = 'block';
 
@@ -258,12 +230,17 @@
                 type: 'line',
                 data: {
                     labels: scores.map((_, i) => i+1),
-                    datasets: [{ data: scores, borderColor: '#002d72', backgroundColor: 'rgba(0,45,114,0.06)', fill: true, tension: 0.4, borderWidth: 4 }]
+                    datasets: [{ 
+                        data: scores, 
+                        borderColor: '#002d72', 
+                        backgroundColor: 'rgba(0,45,114,0.06)', 
+                        fill: true, tension: 0.4, borderWidth: 4, pointRadius: 5, pointBackgroundColor: '#002d72' 
+                    }]
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { x: { display: false }, y: { min: 35, max: 80 } }
+                    scales: { x: { display: false }, y: { min: 35, max: 80, grid: { color: '#f1f5f9' } } }
                 }
             });
         }

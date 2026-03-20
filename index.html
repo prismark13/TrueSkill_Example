@@ -8,18 +8,19 @@
     <style>
         :root { --navy: #002d72; --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0; --slate-400: #94a3b8; --emerald: #10b981; --rose: #f43f5e; --gold: #fbbf24; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; padding: 40px; color: #1e293b; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; padding: 40px; color: #1e293b; line-height: 1.5; }
         .container { max-width: 1100px; margin: auto; }
         header { border-bottom: 1px solid var(--slate-200); padding-bottom: 30px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
         .branding h1 { font-family: 'Instrument Serif', serif; font-size: 72px; color: var(--navy); line-height: 0.8; }
+        .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
         .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; }
-        .search-input { flex-grow: 1; padding: 14px 22px; border-radius: 14px; border: 1px solid var(--slate-200); outline: none; background: var(--slate-50); }
+        .search-input { flex-grow: 1; padding: 14px 22px; border-radius: 14px; border: 1px solid var(--slate-200); outline: none; background: var(--slate-50); transition: 0.2s; }
         .toggle-group { display: flex; background: var(--slate-100); padding: 5px; border-radius: 12px; }
         .tgl-btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--slate-400); background: none; transition: 0.2s; }
         .tgl-btn.active { background: white; color: var(--navy); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 24px 30px; display: grid; grid-template-columns: 60px 1fr 150px 100px; align-items: center; cursor: pointer; margin-bottom: 10px; transition: 0.3s; }
-        .card:hover:not(.inactive) { border-color: var(--navy); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,45,114,0.06); }
-        .card.inactive { opacity: 0.4; border-style: dashed; }
+        .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 24px 30px; display: grid; grid-template-columns: 80px 1fr 150px 100px; align-items: center; cursor: pointer; transition: 0.3s; margin-bottom: 12px; }
+        .card:hover:not(.inactive) { border-color: var(--navy); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,45,114,0.08); }
+        .card.inactive { opacity: 0.4; filter: grayscale(1); border-style: dashed; }
         .rank { font-size: 24px; font-weight: 800; color: var(--slate-200); }
         .mu-val { font-size: 26px; font-weight: 900; color: var(--navy); text-align: right; }
         .badge { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 5px; text-transform: uppercase; margin-top: 8px; display: inline-block; }
@@ -62,69 +63,101 @@
         </div>
         <div id="cardContainer"></div>
     </div>
+
     <script>
         let db = null; let curYear = '2026'; let curMode = 'pairs'; let chart = null;
-        async function init() { const res = await fetch('./data.json'); db = await res.json(); render(); }
-        function setYear(y, b) { curYear = y; updateActive('.tgl-btn', b, '#yearGroup'); render(); }
-        function setMode(m, b) { curMode = m; updateActive('.tgl-btn', b, '#modeGroup'); render(); }
-        function updateActive(cls, b, p) { document.querySelectorAll(p + ' ' + cls).forEach(btn => btn.classList.remove('active')); b.classList.add('active'); }
-        
+
+        async function init() { 
+            const res = await fetch('./data.json'); db = await res.json();
+            // Critical Reconstruction: Maps individual stats from Partnership history
+            Object.keys(db).forEach(y => {
+                db[y].individuals.forEach(indiv => {
+                    const m = db[y].pairs.filter(p => p.name.includes(indiv.name));
+                    indiv.gms = m.reduce((a, b) => a + b.gms, 0);
+                    indiv.avg_pct = m.length ? (m.reduce((a, b) => a + b.avg_pct, 0) / m.length).toFixed(1) : 0;
+                });
+            });
+            render(); 
+        }
+
+        function setYear(y, b) { curYear = y; updateActive('#yearGroup', b); render(); }
+        function setMode(m, b) { curMode = m; updateActive('#modeGroup', b); render(); }
+        function updateActive(p, b) { document.querySelectorAll(p + ' .tgl-btn').forEach(btn => btn.classList.remove('active')); b.classList.add('active'); }
+
         function render() {
             if(!db || !db[curYear]) return;
             const q = document.getElementById('searchInput').value.toLowerCase();
             const container = document.getElementById('cardContainer'); container.innerHTML = '';
-            if (curMode === 'individuals') {
-                db[curYear]['individuals'].forEach(indiv => {
-                    const matches = db[curYear]['pairs'].filter(p => p.name.includes(indiv.name));
-                    indiv.gms = matches.reduce((acc, p) => acc + p.gms, 0);
-                    indiv.avg_pct = matches.length ? (matches.reduce((acc, p) => acc + p.avg_pct, 0) / matches.length).toFixed(1) : 0;
-                });
-            }
-            const list = db[curYear][curMode].filter(i => i.name.toLowerCase().includes(q)).sort((a,b) => (b.gms >= b.quota) - (a.gms >= a.quota) || b.mu - a.mu);
+            
+            const list = db[curYear][curMode].filter(i => i.name.toLowerCase().includes(q))
+                .sort((a,b) => (b.gms >= b.quota) - (a.gms >= a.quota) || b.mu - a.mu);
+
             list.forEach((item, i) => {
                 const isQ = item.gms >= item.quota;
                 const card = document.createElement('div'); card.className = `card ${isQ ? '' : 'inactive'}`;
                 if (isQ) card.onclick = () => openPanel(item);
-                card.innerHTML = `<div class="rank">${isQ?(i<3?['🥇','🥈','🥉'][i]:i+1):'•'}</div><div><div style="font-weight:700;">${item.name}</div><span class="badge" style="background:#f1f5f9; color:#94a3b8;">${item.gms} Games • ${item.avg_pct}%</span></div><div class="mu-val">${item.mu.toFixed(1)}</div><div style="text-align:right; font-weight:600; color:#cbd5e1;">${item.mu.toFixed(1)}</div>`;
+                
+                card.innerHTML = `
+                    <div class="rank">${isQ?(i<3?['🥇','🥈','🥉'][i]:i+1):'•'}</div>
+                    <div>
+                        <div style="font-weight:700; font-size:18px;">${item.name}</div>
+                        <span class="badge" style="background:#f1f5f9; color:#94a3b8;">${item.gms} Games • ${item.avg_pct}%</span>
+                    </div>
+                    <div class="mu-val">${item.mu.toFixed(1)}</div>
+                    <div style="text-align:right; font-weight:600; color:#cbd5e1;">${item.mu.toFixed(1)}</div>`;
                 container.appendChild(card);
             });
         }
-
         function openPanel(item) {
             document.getElementById('sideName').textContent = item.name;
             const tbody = document.getElementById('histBody'); tbody.innerHTML = '';
             let h = [];
+
             if (curMode === 'individuals') {
                 document.getElementById('partnerSection').style.display = 'block';
+                const plist = document.getElementById('partnerList'); plist.innerHTML = '';
                 const ps = db[curYear]['pairs'].filter(p => p.name.includes(item.name)).map(p => {
                     const partner = p.name.replace(item.name, '').replace(' & ', '').trim();
                     const syn = p.mu - ((p.p1_mu + p.p2_mu) / 2);
                     return { name: partner, synergy: syn, hist: p.h };
                 }).sort((a,b) => b.synergy - a.synergy);
-                document.getElementById('partnerList').innerHTML = '';
-                ps.slice(0, 3).forEach(p => {
-                    document.getElementById('partnerList').innerHTML += `<div style="display:flex; justify-content:space-between; padding:10px; background:#f8fafc; border-radius:8px; margin-bottom:5px;"><span>${p.name}</span><span style="font-weight:800; color:${p.synergy>0?'#10b981':'#f43f5e'}">${p.synergy>0?'+':''}${p.synergy.toFixed(1)}</span></div>`;
+
+                ps.slice(0,3).forEach(p => { 
+                    plist.innerHTML += `<div style="display:flex;justify-content:space-between;padding:10px;background:#f8fafc;border-radius:8px;margin-bottom:5px;"><span>${p.name}</span><span style="font-weight:800;color:${p.synergy>0?'#10b981':'#f43f5e'}">${p.synergy>0?'+':''}${p.synergy.toFixed(1)}</span></div>`; 
                 });
                 ps.forEach(p => h.push(...p.hist.map(sh => ({...sh, partner: p.name}))));
                 h.sort((a,b) => new Date(a.d) - new Date(b.d));
-            } else {
-                document.getElementById('partnerSection').style.display = 'none';
-                h = item.h;
+            } else { 
+                document.getElementById('partnerSection').style.display = 'none'; 
+                h = item.h; 
             }
-            h.slice().reverse().forEach((r, i, arr) => {
+
+            // CRITICAL: The "Hammer Anchor" Display Logic (+/-)
+            const displayRows = h.slice().reverse();
+            displayRows.forEach((r, i) => {
                 let dHtml = '--';
-                if (i < arr.length - 1) {
-                    const d = r.m - arr[i+1].m;
-                    dHtml = `<span style="font-weight:800; color:${d>0?'#10b981':(d<0?'#f43f5e':'#94a3b8')}">${d>0?'+':''}${d.toFixed(1)}</span>`;
+                if (i < displayRows.length - 1) {
+                    const d = r.m - displayRows[i+1].m; // Current Rating - Previous Rating
+                    const dColor = d > 0.1 ? 'var(--emerald)' : (d < -0.1 ? 'var(--rose)' : 'var(--slate-400)');
+                    dHtml = `<span style="font-weight:800;color:${dColor}">${d>0?'+':''}${d.toFixed(1)}</span>`;
                 }
-                tbody.innerHTML += `<tr><td>${r.d}</td><td>${r.t}</td><td>${r.partner || '--'}</td><td>${r.p}%</td><td>${r.s}</td><td style="font-weight:800; color:var(--navy)">${r.m}</td><td>${dHtml}</td></tr>`;
+                tbody.innerHTML += `<tr><td>${r.d}</td><td>${r.t}</td><td>${r.partner || '--'}</td><td>${r.p}%</td><td>${r.s}</td><td style="font-weight:800;color:var(--navy)">${r.m}</td><td>${dHtml}</td></tr>`;
             });
-            document.getElementById('sidePanel').style.right = '0'; document.getElementById('overlay').style.display = 'block';
+
+            document.getElementById('sidePanel').style.right = '0'; 
+            document.getElementById('overlay').style.display = 'block';
+            
             const ctx = document.getElementById('sideChart').getContext('2d');
             if(chart) chart.destroy();
-            chart = new Chart(ctx, { type: 'line', data: { labels: h.map(x => x.d), datasets: [{ data: h.map(x => x.m), borderColor: '#002d72', borderWidth: 4, pointRadius: 0, tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } } });
+            chart = new Chart(ctx, { 
+                type: 'line', 
+                data: { labels: h.map(x => x.d), datasets: [{ data: h.map(x => x.m), borderColor: '#002d72', borderWidth: 4, pointRadius: 0, tension: 0.3 }] }, 
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } } 
+            });
         }
+
         function closePanel() { document.getElementById('sidePanel').style.right = '-850px'; document.getElementById('overlay').style.display = 'none'; }
+        
         init();
     </script>
 </body>

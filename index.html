@@ -2,162 +2,153 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Honors Bridge | Professional Analytics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honors Bridge | 2026 Analytics</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
-        :root { --navy: #002d72; --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0; --slate-400: #94a3b8; --emerald: #10b981; --rose: #f43f5e; --gold: #fbbf24; }
+        :root { 
+            --navy: #002d72; 
+            --slate-50: #f8fafc; 
+            --slate-100: #f1f5f9; 
+            --slate-200: #e2e8f0; 
+            --slate-400: #94a3b8; 
+            --emerald: #10b981; 
+            --rose: #f43f5e; 
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; padding: 40px; color: #1e293b; line-height: 1.5; }
         .container { max-width: 1100px; margin: auto; }
-        header { border-bottom: 1px solid var(--slate-200); padding-bottom: 30px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
-        .branding h1 { font-family: 'Instrument Serif', serif; font-size: 72px; color: var(--navy); line-height: 0.8; }
+        header { border-bottom: 1px solid var(--slate-200); padding-bottom: 30px; margin-bottom: 30px; }
+        .branding h1 { font-family: 'Instrument Serif', serif; font-size: 64px; color: var(--navy); line-height: 0.9; }
         .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
+        .sub-header { font-size: 14px; font-weight: 700; color: var(--slate-400); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+        
         .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; }
-        .search-input { flex-grow: 1; padding: 14px 22px; border-radius: 14px; border: 1px solid var(--slate-200); outline: none; background: var(--slate-50); transition: 0.2s; }
-        .toggle-group { display: flex; background: var(--slate-100); padding: 5px; border-radius: 12px; }
-        .tgl-btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--slate-400); background: none; transition: 0.2s; }
-        .tgl-btn.active { background: white; color: var(--navy); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 24px 30px; display: grid; grid-template-columns: 80px 1fr 150px 100px; align-items: center; cursor: pointer; transition: 0.3s; margin-bottom: 12px; }
-        .card:hover:not(.inactive) { border-color: var(--navy); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,45,114,0.08); }
-        .card.inactive { opacity: 0.4; filter: grayscale(1); border-style: dashed; }
-        .rank { font-size: 24px; font-weight: 800; color: var(--slate-200); }
+        .search-input { flex-grow: 1; padding: 16px 24px; border-radius: 16px; border: 1px solid var(--slate-200); outline: none; background: var(--slate-50); transition: 0.2s; font-size: 16px; font-family: inherit; }
+        .search-input:focus { border-color: var(--navy); background: white; box-shadow: 0 0 0 4px rgba(0,45,114,0.05); }
+
+        .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 24px 30px; display: grid; grid-template-columns: 80px 1fr 140px 120px; align-items: center; cursor: pointer; transition: 0.3s; margin-bottom: 12px; }
+        .card:hover { border-color: var(--navy); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,45,114,0.08); }
+        
+        .rank { font-size: 28px; font-weight: 800; color: var(--slate-200); font-family: 'Instrument Serif', serif; }
         .mu-val { font-size: 26px; font-weight: 900; color: var(--navy); text-align: right; }
-        .badge { font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 5px; text-transform: uppercase; margin-top: 8px; display: inline-block; }
-        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.1); backdrop-filter: blur(8px); display: none; z-index: 90; }
-        #sidePanel { position: fixed; top: 0; right: -850px; width: 800px; height: 100%; background: white; z-index: 100; padding: 40px; transition: 0.5s; overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.1); }
-        .hist-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 20px; }
-        .hist-table th { text-align: left; color: var(--slate-400); padding-bottom: 10px; border-bottom: 2px solid var(--slate-100); text-transform: uppercase; }
-        .hist-table td { padding: 12px 5px; border-bottom: 1px solid var(--slate-50); }
+        .elo-label { font-size: 10px; font-weight: 800; color: var(--slate-400); text-align: right; text-transform: uppercase; }
+        .badge { font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 6px; text-transform: uppercase; margin-top: 8px; display: inline-block; background: var(--slate-100); color: var(--slate-400); }
+
+        .overlay { position: fixed; inset: 0; background: rgba(0,20,50,0.2); backdrop-filter: blur(8px); display: none; z-index: 90; }
+        #sidePanel { position: fixed; top: 0; right: -850px; width: 800px; height: 100%; background: white; z-index: 100; padding: 50px; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.1); }
+        .hist-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 30px; }
+        .hist-table th { text-align: left; color: var(--slate-400); padding-bottom: 15px; border-bottom: 2px solid var(--slate-100); text-transform: uppercase; letter-spacing: 0.5px; }
+        .hist-table td { padding: 14px 8px; border-bottom: 1px solid var(--slate-50); }
     </style>
 </head>
 <body>
     <div class="overlay" id="overlay" onclick="closePanel()"></div>
     <div id="sidePanel">
-        <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:20px;">← CLOSE PROFILE</button>
-        <h3 id="sideName" style="font-size:32px; font-weight:800; color:var(--navy);">--</h3>
-        <div style="height:220px; margin:30px 0;"><canvas id="sideChart"></canvas></div>
-        <div id="partnerSection" style="display:none; margin-bottom: 40px;">
-            <div style="font-weight:800; color:var(--navy); font-size:14px; margin-bottom:15px;">TOP STRATEGIC PARTNERS</div>
-            <div id="partnerList"></div>
-        </div>
+        <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:30px; font-size: 12px;">← BACK TO RANKINGS</button>
+        <h3 id="sideName" style="font-size:42px; font-family: 'Instrument Serif', serif; color:var(--navy); margin-bottom: 10px;">--</h3>
+        <div id="sideStats" class="badge">--</div>
+        <div style="height:250px; margin:40px 0;"><canvas id="sideChart"></canvas></div>
         <table class="hist-table">
-            <thead><tr><th>Date</th><th>Session</th><th>Partner</th><th>%</th><th>SoS</th><th>Rating</th><th>+/-</th></tr></thead>
+            <thead><tr><th>Date</th><th>Session</th><th>% Result</th><th>SoS</th><th>Rating</th><th>+/-</th></tr></thead>
             <tbody id="histBody"></tbody>
         </table>
     </div>
+
     <div class="container">
-        <header><div class="branding"><h1>Honors <span>Rankings</span></h1></div></header>
+        <header>
+            <div class="branding">
+                <h1>Partnership <span>Index</span></h1>
+                <div class="sub-header">2026 Professional Leaderboard</div>
+            </div>
+        </header>
         <div class="controls-row">
-            <div class="toggle-group" id="yearGroup">
-                <button class="tgl-btn active" onclick="setYear('2026', this)">2026</button>
-                <button class="tgl-btn" onclick="setYear('2025', this)">2025</button>
-                <button class="tgl-btn" onclick="setYear('2024', this)">2024</button>
-                <button class="tgl-btn" onclick="setYear('overall', this)">All-Time</button>
-            </div>
-            <input type="text" id="searchInput" class="search-input" placeholder="Search..." oninput="render()">
-            <div class="toggle-group" id="modeGroup">
-                <button class="tgl-btn active" onclick="setMode('pairs', this)">Pairs</button>
-                <button class="tgl-btn" onclick="setMode('individuals', this)">Individuals</button>
-            </div>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search partnerships..." oninput="render()">
         </div>
         <div id="cardContainer"></div>
     </div>
 
     <script>
-        let db = null; let curYear = '2026'; let curMode = 'pairs'; let chart = null;
+        let data2026 = null; let chart = null;
 
         async function init() { 
-            const res = await fetch('./data.json'); db = await res.json();
-            // Critical Reconstruction: Maps individual stats from Partnership history
-            Object.keys(db).forEach(y => {
-                db[y].individuals.forEach(indiv => {
-                    const m = db[y].pairs.filter(p => p.name.includes(indiv.name));
-                    indiv.gms = m.reduce((a, b) => a + b.gms, 0);
-                    indiv.avg_pct = m.length ? (m.reduce((a, b) => a + b.avg_pct, 0) / m.length).toFixed(1) : 0;
-                });
-            });
-            render(); 
+            try {
+                const res = await fetch('./data.json');
+                const fullDb = await res.json();
+                data2026 = fullDb["2026"]?.pairs || [];
+                render(); 
+            } catch (e) { console.error("Data load error", e); }
         }
 
-        function setYear(y, b) { curYear = y; updateActive('#yearGroup', b); render(); }
-        function setMode(m, b) { curMode = m; updateActive('#modeGroup', b); render(); }
-        function updateActive(p, b) { document.querySelectorAll(p + ' .tgl-btn').forEach(btn => btn.classList.remove('active')); b.classList.add('active'); }
-
         function render() {
-            if(!db || !db[curYear]) return;
+            if(!data2026) return;
             const q = document.getElementById('searchInput').value.toLowerCase();
-            const container = document.getElementById('cardContainer'); container.innerHTML = '';
+            const container = document.getElementById('cardContainer');
+            container.innerHTML = '';
             
-            const list = db[curYear][curMode].filter(i => i.name.toLowerCase().includes(q))
-                .sort((a,b) => (b.gms >= b.quota) - (a.gms >= a.quota) || b.mu - a.mu);
+            const list = data2026.filter(p => p.name.toLowerCase().includes(q))
+                .sort((a,b) => b.mu - a.mu);
 
             list.forEach((item, i) => {
-                const isQ = item.gms >= item.quota;
-                const card = document.createElement('div'); card.className = `card ${isQ ? '' : 'inactive'}`;
-                if (isQ) card.onclick = () => openPanel(item);
-                
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openPanel(item);
+                const elo = (item.mu - (3 * (item.sigma || 0))).toFixed(1);
+
                 card.innerHTML = `
-                    <div class="rank">${isQ?(i<3?['🥇','🥈','🥉'][i]:i+1):'•'}</div>
+                    <div class="rank">${i < 3 ? ['🥇','🥈','🥉'][i] : i + 1}</div>
                     <div>
-                        <div style="font-weight:700; font-size:18px;">${item.name}</div>
-                        <span class="badge" style="background:#f1f5f9; color:#94a3b8;">${item.gms} Games • ${item.avg_pct}%</span>
+                        <div style="font-weight:700; font-size:20px; color:var(--navy);">${item.name}</div>
+                        <span class="badge">${item.gms} Boards</span>
                     </div>
-                    <div class="mu-val">${item.mu.toFixed(1)}</div>
-                    <div style="text-align:right; font-weight:600; color:#cbd5e1;">${item.mu.toFixed(1)}</div>`;
+                    <div>
+                        <div class="elo-label">Conservative</div>
+                        <div class="mu-val" style="color:var(--slate-400)">${elo}</div>
+                    </div>
+                    <div>
+                        <div class="elo-label">Current Mu</div>
+                        <div class="mu-val">${item.mu.toFixed(1)}</div>
+                    </div>`;
                 container.appendChild(card);
             });
         }
+
         function openPanel(item) {
             document.getElementById('sideName').textContent = item.name;
+            document.getElementById('sideStats').textContent = `${item.gms} Boards • Avg ${item.avg_pct}%`;
             const tbody = document.getElementById('histBody'); tbody.innerHTML = '';
-            let h = [];
+            const h = item.h || [];
+            const displayRows = [...h].reverse();
 
-            if (curMode === 'individuals') {
-                document.getElementById('partnerSection').style.display = 'block';
-                const plist = document.getElementById('partnerList'); plist.innerHTML = '';
-                const ps = db[curYear]['pairs'].filter(p => p.name.includes(item.name)).map(p => {
-                    const partner = p.name.replace(item.name, '').replace(' & ', '').trim();
-                    const syn = p.mu - ((p.p1_mu + p.p2_mu) / 2);
-                    return { name: partner, synergy: syn, hist: p.h };
-                }).sort((a,b) => b.synergy - a.synergy);
-
-                ps.slice(0,3).forEach(p => { 
-                    plist.innerHTML += `<div style="display:flex;justify-content:space-between;padding:10px;background:#f8fafc;border-radius:8px;margin-bottom:5px;"><span>${p.name}</span><span style="font-weight:800;color:${p.synergy>0?'#10b981':'#f43f5e'}">${p.synergy>0?'+':''}${p.synergy.toFixed(1)}</span></div>`; 
-                });
-                ps.forEach(p => h.push(...p.hist.map(sh => ({...sh, partner: p.name}))));
-                h.sort((a,b) => new Date(a.d) - new Date(b.d));
-            } else { 
-                document.getElementById('partnerSection').style.display = 'none'; 
-                h = item.h; 
-            }
-
-            // CRITICAL: The "Hammer Anchor" Display Logic (+/-)
-            const displayRows = h.slice().reverse();
             displayRows.forEach((r, i) => {
-                let dHtml = '--';
+                let diffHtml = '--';
                 if (i < displayRows.length - 1) {
-                    const d = r.m - displayRows[i+1].m; // Current Rating - Previous Rating
-                    const dColor = d > 0.1 ? 'var(--emerald)' : (d < -0.1 ? 'var(--rose)' : 'var(--slate-400)');
-                    dHtml = `<span style="font-weight:800;color:${dColor}">${d>0?'+':''}${d.toFixed(1)}</span>`;
+                    const diff = r.m - displayRows[i+1].m;
+                    const color = diff > 0.05 ? 'var(--emerald)' : (diff < -0.05 ? 'var(--rose)' : 'var(--slate-400)');
+                    diffHtml = `<span style="font-weight:800;color:${color}">${diff > 0 ? '+' : ''}${diff.toFixed(2)}</span>`;
                 }
-                tbody.innerHTML += `<tr><td>${r.d}</td><td>${r.t}</td><td>${r.partner || '--'}</td><td>${r.p}%</td><td>${r.s}</td><td style="font-weight:800;color:var(--navy)">${r.m}</td><td>${dHtml}</td></tr>`;
+                tbody.innerHTML += `<tr><td>${r.d}</td><td>${r.t}</td><td>${r.p}%</td><td>${r.s}</td><td style="font-weight:800">${r.m.toFixed(2)}</td><td>${diffHtml}</td></tr>`;
             });
 
             document.getElementById('sidePanel').style.right = '0'; 
             document.getElementById('overlay').style.display = 'block';
-            
             const ctx = document.getElementById('sideChart').getContext('2d');
             if(chart) chart.destroy();
             chart = new Chart(ctx, { 
                 type: 'line', 
-                data: { labels: h.map(x => x.d), datasets: [{ data: h.map(x => x.m), borderColor: '#002d72', borderWidth: 4, pointRadius: 0, tension: 0.3 }] }, 
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false } } } 
+                data: { 
+                    labels: h.map(x => x.d), 
+                    datasets: [{ data: h.map(x => x.m), borderColor: '#002d72', borderWidth: 3, pointRadius: 4, tension: 0.2 }] 
+                }, 
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } 
             });
         }
 
-        function closePanel() { document.getElementById('sidePanel').style.right = '-850px'; document.getElementById('overlay').style.display = 'none'; }
-        
+        function closePanel() { 
+            document.getElementById('sidePanel').style.right = '-850px'; 
+            document.getElementById('overlay').style.display = 'none'; 
+        }
         init();
     </script>
 </body>

@@ -2,61 +2,61 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honors Bridge | Individual Bayesian Index</title>
+    <title>New York Bridge Rankings | Honors</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --navy: #002d72; 
-            --slate-50: #f8fafc; 
-            --slate-100: #f1f5f9; 
-            --slate-200: #e2e8f0; 
-            --slate-400: #94a3b8; 
-            --emerald: #10b981; 
-            --rose: #f43f5e; 
-            --gold: #fbbf24; 
+            --navy: #002d72; --slate-50: #f8fafc; --slate-100: #f1f5f9; 
+            --slate-200: #e2e8f0; --slate-400: #94a3b8; --emerald: #10b981; 
+            --rose: #f43f5e; --gold: #fbbf24; 
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; padding: 40px; color: #1e293b; line-height: 1.5; }
         .container { max-width: 1100px; margin: auto; }
         header { border-bottom: 1px solid var(--slate-200); padding-bottom: 30px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+        
         .branding h1 { font-family: 'Instrument Serif', serif; font-size: 64px; color: var(--navy); line-height: 0.9; }
         .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
-        .sub-header { font-size: 14px; font-weight: 700; color: var(--slate-400); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+        .sub-header { font-size: 16px; font-weight: 700; color: var(--slate-400); text-transform: uppercase; letter-spacing: 2px; margin-top: 10px; }
         
         .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; }
-        .search-input { flex-grow: 1; padding: 16px 24px; border-radius: 16px; border: 1px solid var(--slate-200); outline: none; background: var(--slate-50); transition: 0.2s; font-size: 16px; }
-        .year-select { padding: 16px; border-radius: 16px; border: 1px solid var(--slate-200); background: white; font-weight: 700; color: var(--navy); cursor: pointer; }
+        .search-input { flex-grow: 1; padding: 18px 24px; border-radius: 16px; border: 1px solid var(--slate-200); outline: none; background: var(--slate-50); font-size: 16px; font-family: inherit; }
+        .year-select { padding: 16px; border-radius: 16px; border: 1px solid var(--slate-200); background: white; font-weight: 800; color: var(--navy); cursor: pointer; min-width: 150px; }
 
         .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 24px 30px; display: grid; grid-template-columns: 80px 1fr 140px 120px; align-items: center; cursor: pointer; transition: 0.3s; margin-bottom: 12px; }
         .card:hover { border-color: var(--navy); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,45,114,0.08); }
-        
-        .rank { font-size: 28px; font-weight: 800; color: var(--slate-200); font-family: 'Instrument Serif', serif; }
+        .rank { font-size: 32px; font-weight: 800; color: var(--slate-200); font-family: 'Instrument Serif', serif; }
         .mu-val { font-size: 26px; font-weight: 900; color: var(--navy); text-align: right; }
-        .delta-tag { font-size: 12px; font-weight: 800; text-align: right; }
-        .badge { font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 6px; text-transform: uppercase; margin-top: 8px; display: inline-block; background: var(--slate-100); color: var(--slate-400); }
+        .elo-label { font-size: 10px; font-weight: 800; color: var(--slate-400); text-align: right; text-transform: uppercase; }
+        .badge { font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 6px; text-transform: uppercase; background: var(--slate-100); color: var(--slate-400); margin-top: 5px; display: inline-block;}
 
-        /* Sidebar Overlay */
         .overlay { position: fixed; inset: 0; background: rgba(0,20,50,0.2); backdrop-filter: blur(8px); display: none; z-index: 90; }
-        #sidePanel { position: fixed; top: 0; right: -850px; width: 800px; height: 100%; background: white; z-index: 100; padding: 50px; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; }
+        #sidePanel { position: fixed; top: 0; right: -850px; width: 800px; height: 100%; background: white; z-index: 100; padding: 50px; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.1); }
+        .hist-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 30px; }
+        .hist-table th { text-align: left; color: var(--slate-400); padding-bottom: 15px; border-bottom: 2px solid var(--slate-100); }
+        .hist-table td { padding: 14px 8px; border-bottom: 1px solid var(--slate-50); }
     </style>
 </head>
 <body>
     <div class="overlay" id="overlay" onclick="closePanel()"></div>
     
     <div id="sidePanel">
-        <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:30px; font-size: 12px;">← BACK TO RANKINGS</button>
-        <h3 id="sideName" style="font-size:42px; font-family: 'Instrument Serif', serif; color:var(--navy);">--</h3>
+        <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:30px; letter-spacing: 1px;">← BACK TO RANKINGS</button>
+        <h3 id="sideName" style="font-size:42px; font-family: 'Instrument Serif', serif; color:var(--navy); margin-bottom: 10px;">--</h3>
         <div id="sideStats" class="badge">--</div>
-        <div style="height:300px; margin:40px 0;"><canvas id="sideChart"></canvas></div>
+        <div style="height:280px; margin:40px 0;"><canvas id="sideChart"></canvas></div>
+        <table class="hist-table">
+            <thead><tr><th>Date</th><th>Session</th><th>Weight</th><th>Impact</th><th>Elo</th></tr></thead>
+            <tbody id="histBody"></tbody>
+        </table>
     </div>
 
     <div class="container">
         <header>
             <div class="branding">
-                <h1>Individual <span>Impact</span></h1>
-                <div class="sub-header" id="updateStamp">Bayesian Multi-Year Analysis</div>
+                <h1>New York <span>Bridge Rankings</span></h1>
+                <div class="sub-header">Honors Bridge Club • Individual Index</div>
             </div>
             <select id="yearSelect" class="year-select" onchange="render()">
                 <option value="2026">2026 Season</option>
@@ -66,10 +66,12 @@
         </header>
 
         <div class="controls-row">
-            <input type="text" id="searchInput" class="search-input" placeholder="Search elite players..." oninput="render()">
+            <input type="text" id="searchInput" class="search-input" placeholder="Find player..." oninput="render()">
         </div>
 
-        <div id="cardContainer"></div>
+        <div id="cardContainer">
+            <div id="statusMessage" style="text-align:center; padding: 50px; color: var(--slate-400); font-weight: 600;">Connecting to GitHub Data Source...</div>
+        </div>
     </div>
 
     <script>
@@ -78,12 +80,17 @@
 
         async function init() { 
             try {
-                // Fetching the new impact-based JSON format
-                const res = await fetch('./leaderboard_impact.json');
+                // Fetching from root of GitHub repository
+                const res = await fetch('leaderboard_impact.json');
+                if (!res.ok) throw new Error("File not found");
                 fullData = await res.json();
-                document.getElementById('updateStamp').textContent = `Last Updated: ${fullData.metadata.last_updated || '2026'}`;
                 render(); 
-            } catch (e) { console.error("Data load failed", e); }
+            } catch (e) {
+                document.getElementById('statusMessage').innerHTML = 
+                    `<div style="color:var(--rose); font-size: 18px;">⚠️ Could not fetch <b>leaderboard_impact.json</b></div>
+                     <div style="font-size: 14px; margin-top: 10px;">Ensure the JSON file is pushed to your GitHub repository root.</div>`;
+                console.error("Fetch error:", e);
+            }
         }
 
         function render() {
@@ -93,16 +100,21 @@
             const container = document.getElementById('cardContainer');
             container.innerHTML = '';
             
-            // Accessing the yearly slice from your harvested data
+            // Accessing the years object
             const list = (fullData.years[year] || [])
-                .filter(p => p.name.toLowerCase().includes(q));
+                .filter(p => p.name.toLowerCase().includes(q))
+                .sort((a,b) => b.elo - a.elo);
+
+            if(list.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding: 50px; color: var(--slate-400);">No results found for ${year}.</div>`;
+                return;
+            }
 
             list.forEach((item, i) => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.onclick = () => openPanel(item);
                 
-                // Color coding the delta
                 const deltaColor = item.last_delta > 0 ? 'var(--emerald)' : (item.last_delta < 0 ? 'var(--rose)' : 'var(--slate-400)');
                 const deltaSign = item.last_delta > 0 ? '+' : '';
 
@@ -110,14 +122,14 @@
                     <div class="rank">${i < 3 ? ['🥇','🥈','🥉'][i] : i + 1}</div>
                     <div>
                         <div style="font-weight:700; font-size:20px; color:var(--navy);">${item.name}</div>
-                        <span class="badge">Bayesian Weighted Score</span>
+                        <span class="badge">${item.history ? item.history.length : 0} Bayesian Updates</span>
                     </div>
                     <div>
-                        <div style="font-size: 10px; font-weight: 800; color: var(--slate-400); text-align: right; text-transform: uppercase;">Recent Impact</div>
-                        <div class="delta-tag" style="color:${deltaColor}">${deltaSign}${item.last_delta}</div>
+                        <div class="elo-label">Impact</div>
+                        <div class="mu-val" style="color:${deltaColor}; font-size: 20px;">${deltaSign}${item.last_delta}</div>
                     </div>
                     <div>
-                        <div style="font-size: 10px; font-weight: 800; color: var(--slate-400); text-align: right; text-transform: uppercase;">Individual Elo</div>
+                        <div class="elo-label">Individual Elo</div>
                         <div class="mu-val">${item.elo.toFixed(1)}</div>
                     </div>`;
                 container.appendChild(card);
@@ -126,26 +138,44 @@
 
         function openPanel(item) {
             document.getElementById('sideName').textContent = item.name;
-            document.getElementById('sideStats').textContent = `Current Elo: ${item.elo}`;
+            const history = item.history || [];
+            document.getElementById('sideStats').textContent = `${history.length} Sessions Logged`;
             
-            // Visualizing the trend using the history array in your harvested data
+            const tbody = document.getElementById('histBody');
+            tbody.innerHTML = '';
+            [...history].reverse().forEach(h => {
+                const impactColor = h.impact > 0 ? 'var(--emerald)' : (h.impact < 0 ? 'var(--rose)' : 'inherit');
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${h.date}</td>
+                        <td style="font-weight:600">${h.title}</td>
+                        <td style="color:var(--slate-400)">x${h.weight}</td>
+                        <td style="color:${impactColor}; font-weight:800">${h.impact > 0 ? '+' : ''}${h.impact.toFixed(1)}</td>
+                        <td style="font-weight:800; color:var(--navy)">${h.rating.toFixed(1)}</td>
+                    </tr>`;
+            });
+
             const ctx = document.getElementById('sideChart').getContext('2d');
             if(chart) chart.destroy();
-            
-            const history = item.history || []; 
             chart = new Chart(ctx, { 
                 type: 'line', 
                 data: { 
                     labels: history.map(h => h.date), 
                     datasets: [{ 
-                        label: 'Elo Trend',
                         data: history.map(h => h.rating), 
                         borderColor: '#002d72', 
-                        tension: 0.3,
+                        borderWidth: 3, 
+                        pointBackgroundColor: '#fff',
+                        tension: 0.2,
                         fill: false
                     }] 
                 },
-                options: { responsive: true, maintainAspectRatio: false }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { legend: { display: false } },
+                    scales: { y: { border: { dash: [4, 4] } } }
+                }
             });
 
             document.getElementById('sidePanel').style.right = '0'; 

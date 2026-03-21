@@ -1,0 +1,611 @@
+{
+    "last_updated": "2026-03-21 06:32",
+    "years": {
+        "2024": [
+            {
+                "name": "Lapt Chan",
+                "elo": 5094.4
+            },
+            {
+                "name": "Lynne Tarnopol",
+                "elo": 4757.8
+            },
+            {
+                "name": "Judi Radin",
+                "elo": 4732.2
+            },
+            {
+                "name": "David Parsons",
+                "elo": 4651.7
+            },
+            {
+                "name": "Joel Wooldridge",
+                "elo": 4648.0
+            },
+            {
+                "name": "Jodi Edmonds",
+                "elo": 4425.5
+            },
+            {
+                "name": "Mindy F. Fleder",
+                "elo": 4360.9
+            },
+            {
+                "name": "Melanie Tucker",
+                "elo": 4277.5
+            },
+            {
+                "name": "Adam Grossack",
+                "elo": 4079.7
+            },
+            {
+                "name": "Paul Frean",
+                "elo": 4065.7
+            },
+            {
+                "name": "Melissa Fawer",
+                "elo": 3991.7
+            },
+            {
+                "name": "Jeff Bayone",
+                "elo": 3900.2
+            },
+            {
+                "name": "Richard Weissman",
+                "elo": 3692.7
+            },
+            {
+                "name": "Victoria Lefrere",
+                "elo": 3687.2
+            },
+            {
+                "name": "Gillian Miniter",
+                "elo": 3667.7
+            },
+            {
+                "name": "Max Rotaru",
+                "elo": 3652.0
+            },
+            {
+                "name": "Janie Woo",
+                "elo": 3508.5
+            },
+            {
+                "name": "Shlomit Rind",
+                "elo": 3429.9
+            },
+            {
+                "name": "Robert Kuhnreich",
+                "elo": 3415.9
+            },
+            {
+                "name": "Richard Kassar",
+                "elo": 3396.2
+            },
+            {
+                "name": "Gili Haberberg",
+                "elo": 3314.2
+            },
+            {
+                "name": "Anam Tebha",
+                "elo": 3230.3
+            },
+            {
+                "name": "Omer Ekinci",
+                "elo": 3186.6
+            },
+            {
+                "name": "Joe Grue",
+                "elo": 3178.1
+            },
+            {
+                "name": "Simon Erlich",
+                "elo": 3043.6
+            },
+            {
+                "name": "Daniel Rothstein",
+                "elo": 3019.0
+            },
+            {
+                "name": "Richard Whitehead",
+                "elo": 3007.4
+            },
+            {
+                "name": "Glenn Eisenstein",
+                "elo": 2988.5
+            },
+            {
+                "name": "Lynda Nitabach",
+                "elo": 2976.0
+            },
+            {
+                "name": "David Yoon",
+                "elo": 2941.3
+            },
+            {
+                "name": "Michael Lipkin",
+                "elo": 2832.2
+            },
+            {
+                "name": "Scott Levine",
+                "elo": 2802.2
+            },
+            {
+                "name": "Ofra Blonder",
+                "elo": 2790.7
+            },
+            {
+                "name": "David Gurvich",
+                "elo": 2772.8
+            },
+            {
+                "name": "Kerry Kappell",
+                "elo": 2724.6
+            },
+            {
+                "name": "Herb Freedman",
+                "elo": 2706.3
+            },
+            {
+                "name": "Brooke G. Cohen",
+                "elo": 2699.0
+            },
+            {
+                "name": "Kiendl Gordon",
+                "elo": 2677.2
+            },
+            {
+                "name": "Maya Jonas-Silver",
+                "elo": 2671.6
+            },
+            {
+                "name": "Rosette Scheib",
+                "elo": 2656.5
+            },
+            {
+                "name": "Samuel Kuang",
+                "elo": 2656.4
+            },
+            {
+                "name": "James Southern",
+                "elo": 2577.0
+            },
+            {
+                "name": "Radu Nistor",
+                "elo": 2509.5
+            },
+            {
+                "name": "John Hurd",
+                "elo": 2493.6
+            },
+            {
+                "name": "Paul Rosenberg",
+                "elo": 2476.5
+            },
+            {
+                "name": "Jacqueline Chang",
+                "elo": 2468.4
+            },
+            {
+                "name": "Leni May",
+                "elo": 2426.6
+            },
+            {
+                "name": "Linda Einhorn-Ihde",
+                "elo": 2332.8
+            },
+            {
+                "name": "Roberta Feldman",
+                "elo": 2305.5
+            },
+            {
+                "name": "Daniel Lev",
+                "elo": 2301.8
+            }
+        ],
+        "2025": [
+            {
+                "name": "Lapt Chan",
+                "elo": 6644.2
+            },
+            {
+                "name": "David Parsons",
+                "elo": 6317.8
+            },
+            {
+                "name": "Melanie Tucker",
+                "elo": 6064.3
+            },
+            {
+                "name": "Joel Wooldridge",
+                "elo": 6050.0
+            },
+            {
+                "name": "Jodi Edmonds",
+                "elo": 5811.2
+            },
+            {
+                "name": "Paul Frean",
+                "elo": 5786.9
+            },
+            {
+                "name": "Melissa Fawer",
+                "elo": 5742.0
+            },
+            {
+                "name": "Mindy F. Fleder",
+                "elo": 5661.1
+            },
+            {
+                "name": "Adam Grossack",
+                "elo": 5620.8
+            },
+            {
+                "name": "Max Rotaru",
+                "elo": 5363.1
+            },
+            {
+                "name": "Victoria Lefrere",
+                "elo": 5255.0
+            },
+            {
+                "name": "Shlomit Rind",
+                "elo": 5249.0
+            },
+            {
+                "name": "Lynne Tarnopol",
+                "elo": 5226.2
+            },
+            {
+                "name": "Jeff Bayone",
+                "elo": 5175.3
+            },
+            {
+                "name": "Judi Radin",
+                "elo": 5162.8
+            },
+            {
+                "name": "Richard Weissman",
+                "elo": 4844.5
+            },
+            {
+                "name": "Gili Haberberg",
+                "elo": 4692.9
+            },
+            {
+                "name": "Robert Kuhnreich",
+                "elo": 4602.9
+            },
+            {
+                "name": "Richard Kassar",
+                "elo": 4561.9
+            },
+            {
+                "name": "Daniel Rothstein",
+                "elo": 4223.3
+            },
+            {
+                "name": "Janie Woo",
+                "elo": 4067.1
+            },
+            {
+                "name": "Gillian Miniter",
+                "elo": 3877.1
+            },
+            {
+                "name": "Joe Grue",
+                "elo": 3814.4
+            },
+            {
+                "name": "Radu Nistor",
+                "elo": 3747.8
+            },
+            {
+                "name": "David Gurvich",
+                "elo": 3712.7
+            },
+            {
+                "name": "Anam Tebha",
+                "elo": 3683.7
+            },
+            {
+                "name": "Richard Whitehead",
+                "elo": 3588.3
+            },
+            {
+                "name": "Jacqueline Chang",
+                "elo": 3563.6
+            },
+            {
+                "name": "Omer Ekinci",
+                "elo": 3550.2
+            },
+            {
+                "name": "Herb Freedman",
+                "elo": 3540.2
+            },
+            {
+                "name": "Michael Lipkin",
+                "elo": 3438.9
+            },
+            {
+                "name": "Rosalie Brinton",
+                "elo": 3419.4
+            },
+            {
+                "name": "Rosette Scheib",
+                "elo": 3333.4
+            },
+            {
+                "name": "Ofra Blonder",
+                "elo": 3330.9
+            },
+            {
+                "name": "David Yoon",
+                "elo": 3297.5
+            },
+            {
+                "name": "Glenn Eisenstein",
+                "elo": 3296.4
+            },
+            {
+                "name": "Kerry Kappell",
+                "elo": 3281.3
+            },
+            {
+                "name": "Maya Jonas-Silver",
+                "elo": 3138.2
+            },
+            {
+                "name": "Brooke G. Cohen",
+                "elo": 3128.5
+            },
+            {
+                "name": "Simon Erlich",
+                "elo": 3043.6
+            },
+            {
+                "name": "Lynda Nitabach",
+                "elo": 2976.0
+            },
+            {
+                "name": "Kiendl Gordon",
+                "elo": 2963.2
+            },
+            {
+                "name": "James Southern",
+                "elo": 2957.6
+            },
+            {
+                "name": "Samuel Kuang",
+                "elo": 2913.6
+            },
+            {
+                "name": "Paul Rosenberg",
+                "elo": 2894.4
+            },
+            {
+                "name": "Winthrop Allegaert",
+                "elo": 2864.5
+            },
+            {
+                "name": "Scott Levine",
+                "elo": 2766.8
+            },
+            {
+                "name": "Barbara Bayone",
+                "elo": 2708.9
+            },
+            {
+                "name": "Joan Dziekanski",
+                "elo": 2646.7
+            },
+            {
+                "name": "Lloyd Mandell",
+                "elo": 2608.0
+            }
+        ],
+        "2026": [
+            {
+                "name": "Joel Wooldridge",
+                "elo": 7089.1
+            },
+            {
+                "name": "Lapt Chan",
+                "elo": 7028.3
+            },
+            {
+                "name": "Melanie Tucker",
+                "elo": 6480.1
+            },
+            {
+                "name": "Jodi Edmonds",
+                "elo": 6383.2
+            },
+            {
+                "name": "David Parsons",
+                "elo": 6317.8
+            },
+            {
+                "name": "Adam Grossack",
+                "elo": 6191.9
+            },
+            {
+                "name": "Melissa Fawer",
+                "elo": 6095.1
+            },
+            {
+                "name": "Paul Frean",
+                "elo": 6083.6
+            },
+            {
+                "name": "Mindy F. Fleder",
+                "elo": 5661.1
+            },
+            {
+                "name": "Victoria Lefrere",
+                "elo": 5602.2
+            },
+            {
+                "name": "Shlomit Rind",
+                "elo": 5594.4
+            },
+            {
+                "name": "Max Rotaru",
+                "elo": 5363.1
+            },
+            {
+                "name": "Jeff Bayone",
+                "elo": 5287.8
+            },
+            {
+                "name": "Lynne Tarnopol",
+                "elo": 5226.2
+            },
+            {
+                "name": "Judi Radin",
+                "elo": 5153.8
+            },
+            {
+                "name": "Richard Weissman",
+                "elo": 5112.4
+            },
+            {
+                "name": "Gili Haberberg",
+                "elo": 4886.5
+            },
+            {
+                "name": "Richard Kassar",
+                "elo": 4828.2
+            },
+            {
+                "name": "Robert Kuhnreich",
+                "elo": 4672.9
+            },
+            {
+                "name": "Janie Woo",
+                "elo": 4632.8
+            },
+            {
+                "name": "Daniel Rothstein",
+                "elo": 4556.0
+            },
+            {
+                "name": "Radu Nistor",
+                "elo": 4194.1
+            },
+            {
+                "name": "Jacqueline Chang",
+                "elo": 4011.6
+            },
+            {
+                "name": "David Gurvich",
+                "elo": 4005.0
+            },
+            {
+                "name": "Gillian Miniter",
+                "elo": 3877.1
+            },
+            {
+                "name": "Joe Grue",
+                "elo": 3814.4
+            },
+            {
+                "name": "Herb Freedman",
+                "elo": 3802.5
+            },
+            {
+                "name": "Richard Whitehead",
+                "elo": 3800.8
+            },
+            {
+                "name": "Anam Tebha",
+                "elo": 3762.5
+            },
+            {
+                "name": "Ofra Blonder",
+                "elo": 3736.9
+            },
+            {
+                "name": "Michael Lipkin",
+                "elo": 3668.3
+            },
+            {
+                "name": "Omer Ekinci",
+                "elo": 3634.7
+            },
+            {
+                "name": "David Yoon",
+                "elo": 3576.2
+            },
+            {
+                "name": "Rosette Scheib",
+                "elo": 3551.1
+            },
+            {
+                "name": "Kerry Kappell",
+                "elo": 3486.7
+            },
+            {
+                "name": "Rosalie Brinton",
+                "elo": 3436.8
+            },
+            {
+                "name": "Glenn Eisenstein",
+                "elo": 3378.1
+            },
+            {
+                "name": "Paul Rosenberg",
+                "elo": 3210.1
+            },
+            {
+                "name": "Kiendl Gordon",
+                "elo": 3190.1
+            },
+            {
+                "name": "Maya Jonas-Silver",
+                "elo": 3138.2
+            },
+            {
+                "name": "Brooke G. Cohen",
+                "elo": 3128.5
+            },
+            {
+                "name": "Samuel Kuang",
+                "elo": 3044.1
+            },
+            {
+                "name": "Simon Erlich",
+                "elo": 3043.6
+            },
+            {
+                "name": "James Southern",
+                "elo": 3039.0
+            },
+            {
+                "name": "Barbara Bayone",
+                "elo": 3010.1
+            },
+            {
+                "name": "Lynda Nitabach",
+                "elo": 2976.0
+            },
+            {
+                "name": "Winthrop Allegaert",
+                "elo": 2881.8
+            },
+            {
+                "name": "Joan Dziekanski",
+                "elo": 2852.4
+            },
+            {
+                "name": "Scott Levine",
+                "elo": 2766.8
+            },
+            {
+                "name": "Cindy Scheinfeld",
+                "elo": 2719.5
+            }
+        ]
+    }
+}

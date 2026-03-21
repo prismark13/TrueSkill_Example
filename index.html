@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Honors Bridge | 2026 Analytics</title>
+    <title>Honors Bridge | Individual Bayesian Index</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
     <style>
@@ -15,100 +15,110 @@
             --slate-400: #94a3b8; 
             --emerald: #10b981; 
             --rose: #f43f5e; 
+            --gold: #fbbf24; 
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; padding: 40px; color: #1e293b; line-height: 1.5; }
         .container { max-width: 1100px; margin: auto; }
-        header { border-bottom: 1px solid var(--slate-200); padding-bottom: 30px; margin-bottom: 30px; }
+        header { border-bottom: 1px solid var(--slate-200); padding-bottom: 30px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
         .branding h1 { font-family: 'Instrument Serif', serif; font-size: 64px; color: var(--navy); line-height: 0.9; }
         .branding h1 span { font-style: italic; font-weight: 300; color: var(--slate-200); }
         .sub-header { font-size: 14px; font-weight: 700; color: var(--slate-400); text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
         
         .controls-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px; }
-        .search-input { flex-grow: 1; padding: 16px 24px; border-radius: 16px; border: 1px solid var(--slate-200); outline: none; background: var(--slate-50); transition: 0.2s; font-size: 16px; font-family: inherit; }
-        .search-input:focus { border-color: var(--navy); background: white; box-shadow: 0 0 0 4px rgba(0,45,114,0.05); }
+        .search-input { flex-grow: 1; padding: 16px 24px; border-radius: 16px; border: 1px solid var(--slate-200); outline: none; background: var(--slate-50); transition: 0.2s; font-size: 16px; }
+        .year-select { padding: 16px; border-radius: 16px; border: 1px solid var(--slate-200); background: white; font-weight: 700; color: var(--navy); cursor: pointer; }
 
         .card { background: #fff; border: 1px solid var(--slate-100); border-radius: 20px; padding: 24px 30px; display: grid; grid-template-columns: 80px 1fr 140px 120px; align-items: center; cursor: pointer; transition: 0.3s; margin-bottom: 12px; }
         .card:hover { border-color: var(--navy); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,45,114,0.08); }
         
         .rank { font-size: 28px; font-weight: 800; color: var(--slate-200); font-family: 'Instrument Serif', serif; }
         .mu-val { font-size: 26px; font-weight: 900; color: var(--navy); text-align: right; }
-        .elo-label { font-size: 10px; font-weight: 800; color: var(--slate-400); text-align: right; text-transform: uppercase; }
+        .delta-tag { font-size: 12px; font-weight: 800; text-align: right; }
         .badge { font-size: 10px; font-weight: 800; padding: 5px 10px; border-radius: 6px; text-transform: uppercase; margin-top: 8px; display: inline-block; background: var(--slate-100); color: var(--slate-400); }
 
+        /* Sidebar Overlay */
         .overlay { position: fixed; inset: 0; background: rgba(0,20,50,0.2); backdrop-filter: blur(8px); display: none; z-index: 90; }
-        #sidePanel { position: fixed; top: 0; right: -850px; width: 800px; height: 100%; background: white; z-index: 100; padding: 50px; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; box-shadow: -20px 0 60px rgba(0,0,0,0.1); }
-        .hist-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 30px; }
-        .hist-table th { text-align: left; color: var(--slate-400); padding-bottom: 15px; border-bottom: 2px solid var(--slate-100); text-transform: uppercase; letter-spacing: 0.5px; }
-        .hist-table td { padding: 14px 8px; border-bottom: 1px solid var(--slate-50); }
+        #sidePanel { position: fixed; top: 0; right: -850px; width: 800px; height: 100%; background: white; z-index: 100; padding: 50px; transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1); overflow-y: auto; }
     </style>
 </head>
 <body>
     <div class="overlay" id="overlay" onclick="closePanel()"></div>
+    
     <div id="sidePanel">
         <button onclick="closePanel()" style="background:none; border:none; color:var(--slate-400); font-weight:800; cursor:pointer; margin-bottom:30px; font-size: 12px;">← BACK TO RANKINGS</button>
-        <h3 id="sideName" style="font-size:42px; font-family: 'Instrument Serif', serif; color:var(--navy); margin-bottom: 10px;">--</h3>
+        <h3 id="sideName" style="font-size:42px; font-family: 'Instrument Serif', serif; color:var(--navy);">--</h3>
         <div id="sideStats" class="badge">--</div>
-        <div style="height:250px; margin:40px 0;"><canvas id="sideChart"></canvas></div>
-        <table class="hist-table">
-            <thead><tr><th>Date</th><th>Session</th><th>% Result</th><th>SoS</th><th>Rating</th><th>+/-</th></tr></thead>
-            <tbody id="histBody"></tbody>
-        </table>
+        <div style="height:300px; margin:40px 0;"><canvas id="sideChart"></canvas></div>
     </div>
 
     <div class="container">
         <header>
             <div class="branding">
-                <h1>Partnership <span>Index</span></h1>
-                <div class="sub-header">2026 Professional Leaderboard</div>
+                <h1>Individual <span>Impact</span></h1>
+                <div class="sub-header" id="updateStamp">Bayesian Multi-Year Analysis</div>
             </div>
+            <select id="yearSelect" class="year-select" onchange="render()">
+                <option value="2026">2026 Season</option>
+                <option value="2025">2025 Season</option>
+                <option value="2024">2024 Season</option>
+            </select>
         </header>
+
         <div class="controls-row">
-            <input type="text" id="searchInput" class="search-input" placeholder="Search partnerships..." oninput="render()">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search elite players..." oninput="render()">
         </div>
+
         <div id="cardContainer"></div>
     </div>
 
     <script>
-        let data2026 = null; let chart = null;
+        let fullData = null;
+        let chart = null;
 
         async function init() { 
             try {
-                const res = await fetch('./data.json');
-                const fullDb = await res.json();
-                data2026 = fullDb["2026"]?.pairs || [];
+                // Fetching the new impact-based JSON format
+                const res = await fetch('./leaderboard_impact.json');
+                fullData = await res.json();
+                document.getElementById('updateStamp').textContent = `Last Updated: ${fullData.metadata.last_updated || '2026'}`;
                 render(); 
-            } catch (e) { console.error("Data load error", e); }
+            } catch (e) { console.error("Data load failed", e); }
         }
 
         function render() {
-            if(!data2026) return;
+            if(!fullData) return;
+            const year = document.getElementById('yearSelect').value;
             const q = document.getElementById('searchInput').value.toLowerCase();
             const container = document.getElementById('cardContainer');
             container.innerHTML = '';
             
-            const list = data2026.filter(p => p.name.toLowerCase().includes(q))
-                .sort((a,b) => b.mu - a.mu);
+            // Accessing the yearly slice from your harvested data
+            const list = (fullData.years[year] || [])
+                .filter(p => p.name.toLowerCase().includes(q));
 
             list.forEach((item, i) => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.onclick = () => openPanel(item);
-                const elo = (item.mu - (3 * (item.sigma || 0))).toFixed(1);
+                
+                // Color coding the delta
+                const deltaColor = item.last_delta > 0 ? 'var(--emerald)' : (item.last_delta < 0 ? 'var(--rose)' : 'var(--slate-400)');
+                const deltaSign = item.last_delta > 0 ? '+' : '';
 
                 card.innerHTML = `
                     <div class="rank">${i < 3 ? ['🥇','🥈','🥉'][i] : i + 1}</div>
                     <div>
                         <div style="font-weight:700; font-size:20px; color:var(--navy);">${item.name}</div>
-                        <span class="badge">${item.gms} Boards</span>
+                        <span class="badge">Bayesian Weighted Score</span>
                     </div>
                     <div>
-                        <div class="elo-label">Conservative</div>
-                        <div class="mu-val" style="color:var(--slate-400)">${elo}</div>
+                        <div style="font-size: 10px; font-weight: 800; color: var(--slate-400); text-align: right; text-transform: uppercase;">Recent Impact</div>
+                        <div class="delta-tag" style="color:${deltaColor}">${deltaSign}${item.last_delta}</div>
                     </div>
                     <div>
-                        <div class="elo-label">Current Mu</div>
-                        <div class="mu-val">${item.mu.toFixed(1)}</div>
+                        <div style="font-size: 10px; font-weight: 800; color: var(--slate-400); text-align: right; text-transform: uppercase;">Individual Elo</div>
+                        <div class="mu-val">${item.elo.toFixed(1)}</div>
                     </div>`;
                 container.appendChild(card);
             });
@@ -116,39 +126,37 @@
 
         function openPanel(item) {
             document.getElementById('sideName').textContent = item.name;
-            document.getElementById('sideStats').textContent = `${item.gms} Boards • Avg ${item.avg_pct}%`;
-            const tbody = document.getElementById('histBody'); tbody.innerHTML = '';
-            const h = item.h || [];
-            const displayRows = [...h].reverse();
-
-            displayRows.forEach((r, i) => {
-                let diffHtml = '--';
-                if (i < displayRows.length - 1) {
-                    const diff = r.m - displayRows[i+1].m;
-                    const color = diff > 0.05 ? 'var(--emerald)' : (diff < -0.05 ? 'var(--rose)' : 'var(--slate-400)');
-                    diffHtml = `<span style="font-weight:800;color:${color}">${diff > 0 ? '+' : ''}${diff.toFixed(2)}</span>`;
-                }
-                tbody.innerHTML += `<tr><td>${r.d}</td><td>${r.t}</td><td>${r.p}%</td><td>${r.s}</td><td style="font-weight:800">${r.m.toFixed(2)}</td><td>${diffHtml}</td></tr>`;
+            document.getElementById('sideStats').textContent = `Current Elo: ${item.elo}`;
+            
+            // Visualizing the trend using the history array in your harvested data
+            const ctx = document.getElementById('sideChart').getContext('2d');
+            if(chart) chart.destroy();
+            
+            const history = item.history || []; 
+            chart = new Chart(ctx, { 
+                type: 'line', 
+                data: { 
+                    labels: history.map(h => h.date), 
+                    datasets: [{ 
+                        label: 'Elo Trend',
+                        data: history.map(h => h.rating), 
+                        borderColor: '#002d72', 
+                        tension: 0.3,
+                        fill: false
+                    }] 
+                },
+                options: { responsive: true, maintainAspectRatio: false }
             });
 
             document.getElementById('sidePanel').style.right = '0'; 
             document.getElementById('overlay').style.display = 'block';
-            const ctx = document.getElementById('sideChart').getContext('2d');
-            if(chart) chart.destroy();
-            chart = new Chart(ctx, { 
-                type: 'line', 
-                data: { 
-                    labels: h.map(x => x.d), 
-                    datasets: [{ data: h.map(x => x.m), borderColor: '#002d72', borderWidth: 3, pointRadius: 4, tension: 0.2 }] 
-                }, 
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } 
-            });
         }
 
         function closePanel() { 
             document.getElementById('sidePanel').style.right = '-850px'; 
             document.getElementById('overlay').style.display = 'none'; 
         }
+        
         init();
     </script>
 </body>
